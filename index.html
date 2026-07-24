@@ -177,7 +177,7 @@ body[data-lang="ar"] .caseNameInput{font-family:"Tajawal",sans-serif;font-weight
 .chip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
 .chip.on .dot{background:var(--accent)}
 
-.segGroup{display:inline-flex;background:rgba(255,255,255,.35);border:1px solid var(--line);border-radius:var(--r-pill);padding:3px;gap:2px}
+.segGroup{display:inline-flex;flex-wrap:wrap;background:rgba(255,255,255,.35);border:1px solid var(--line);border-radius:var(--r-pill);padding:3px;gap:2px}
 [data-theme="dark"] .segGroup{background:rgba(255,255,255,.05)}
 .segBtn{border:none;background:transparent;padding:7px 13px;border-radius:var(--r-pill);font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .22s var(--ease)}
 .segBtn.on{background:var(--accent);color:var(--accent-ink)}
@@ -218,6 +218,9 @@ body[data-lang="ar"] .dueChip{font-family:"Tajawal",sans-serif;font-weight:800}
 .emptyState svg{width:40px;height:40px;color:var(--faint);margin-bottom:10px}
 .emptyState p{margin:0;font-size:13.5px}
 
+.peopleToolbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.selectAllWrap{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted);cursor:pointer}
+.personCheck,.selectAllWrap input{width:15px;height:15px;accent-color:var(--accent);cursor:pointer;flex-shrink:0}
 .peopleGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:16px}
 .personRow{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:var(--r-md)}
 .personRow .idx{width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:11.5px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -280,6 +283,14 @@ body[data-lang="ar"] .eyebrow{letter-spacing:.3px}
 .marginPct{font-size:12px;font-weight:700;color:var(--accent);background:rgba(255,255,255,.55);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 [data-theme="dark"] .marginPct{background:rgba(0,0,0,.25)}
 
+.accrualList{display:flex;flex-direction:column;gap:2px}
+.accrualRow{display:flex;align-items:flex-start;gap:10px;padding:10px 4px;cursor:pointer;border-radius:var(--r-sm);transition:background .2s var(--ease)}
+.accrualRow:hover{background:var(--accent-soft)}
+.accrualRow .radioDot{width:16px;height:16px;border-radius:50%;border:2px solid var(--faint);flex-shrink:0;margin-top:2px;position:relative;transition:border-color .2s}
+.accrualRow.on .radioDot{border-color:var(--accent)}
+.accrualRow.on .radioDot::after{content:"";position:absolute;inset:2px;border-radius:50%;background:var(--accent)}
+.accrualRow .accTitle{font-size:13px;font-weight:700}
+.accrualRow .accSub{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.5}
 .ratesHead{display:flex;flex-direction:column;gap:2px;padding:10px 2px 10px;margin-top:2px;border-top:1px dashed var(--line)}
 .ratesHead>span:first-child{font-size:12.5px;font-weight:700}
 .ratesHead .sub{font-size:11px;color:var(--muted)}
@@ -382,6 +393,7 @@ body[data-lang="ar"] .eyebrow{letter-spacing:.3px}
         <button class="btn btn-ghost btn-sm" id="importBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg><span id="importPeopleLbl">استيراد ملف</span></button>
         <input type="file" id="importFileInput" accept=".xlsx,.xls,.csv" style="display:none">
         <span class="quickCount">
+          <input type="text" id="quickPrefixInput" maxlength="20" style="width:78px">
           <input type="text" inputmode="numeric" id="quickCountInput" value="1" maxlength="3">
           <button type="button" id="quickCountBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span id="quickCountLbl">إضافة عدد</span></button>
         </span>
@@ -397,6 +409,15 @@ body[data-lang="ar"] .eyebrow{letter-spacing:.3px}
       </div>
     </div>
     <div class="glass" style="padding:18px">
+      <div class="peopleToolbar" id="peopleToolbar">
+        <label class="selectAllWrap">
+          <input type="checkbox" id="selectAllPeople"><span id="selectAllLbl">تحديد الكل</span>
+        </label>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-ghost btn-sm" id="removeSelectedBtn" style="display:none"></button>
+          <button class="btn btn-ghost btn-sm" id="clearAllBtn"></button>
+        </div>
+      </div>
       <div class="peopleGrid" id="peopleGrid"></div>
       <div id="peopleEmpty" class="emptyState" style="display:none">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -427,13 +448,33 @@ body[data-lang="ar"] .eyebrow{letter-spacing:.3px}
           <div><div class="lbl2" id="lblCompound">فائدة مركّبة</div><div class="sub" id="subCompound">عائد كل سنة يُضاف لأصل السنة التالية</div></div>
           <div class="switch" id="compoundSwitch"><div class="knob"></div></div>
         </div>
-        <div class="settingRow" style="border-bottom:none">
+        <div class="settingRow">
           <div><div class="lbl2" id="lblRounding">توقيت التقريب</div><div class="sub" id="subRounding">وحدات صحيحة، تقريب لأقرب واحد</div></div>
           <div class="segGroup" id="roundingSeg">
             <button class="segBtn" data-val="final" id="roundFinalLbl">الإجمالي</button>
             <button class="segBtn" data-val="perYear" id="roundYearLbl">كل سنة</button>
+            <button class="segBtn" data-val="none" id="roundNoneLbl">بدون تقريب</button>
           </div>
         </div>
+        <div class="settingRow" style="border-bottom:none">
+          <div><div class="lbl2" id="lblRoundExpenses">تقريب المصاريف الإدارية</div><div class="sub" id="subRoundExpenses">تُقرَّب قيمة المصاريف لأقرب وحدة قبل إدراجها في الأساس ووعاء الاستثمار</div></div>
+          <div class="switch" id="roundExpensesSwitch"><div class="knob"></div></div>
+        </div>
+      </div>
+
+      <div class="settingGroup">
+        <div class="eyebrow" id="accrualSectionLbl">قاعدة احتساب الأيام</div>
+        <div class="accrualList" id="accrualList"></div>
+      </div>
+
+      <div class="settingGroup" id="weekendGroup">
+        <div class="eyebrow" id="weekendSectionLbl">أيام العطلة الأسبوعية</div>
+        <div class="chipRow" id="weekendChips" style="margin-bottom:10px"></div>
+        <div class="ratesHead" style="border-top:1px dashed var(--line)">
+          <span id="lblHolidays">عطلات رسمية إضافية</span>
+          <span class="sub" id="subHolidays">تاريخ واحد في كل سطر بصيغة yyyy-mm-dd (تُستخدم فقط مع وضع «أول يوم عمل»)</span>
+        </div>
+        <textarea class="pasteBox" id="holidaysArea" style="min-height:60px"></textarea>
       </div>
 
       <div class="settingGroup">
@@ -462,8 +503,10 @@ body[data-lang="ar"] .eyebrow{letter-spacing:.3px}
 <div class="toastHost" id="toastHost"></div>
 
 <script>
-const DEFAULT_RATES={2017:13.25,2018:14.25,2019:15.25,2020:10.75,2021:6.75,2022:6.75,2023:14.75,2024:17.75,2025:25.75,2026:18.5};
+const DEFAULT_RATES={2017:15.25,2018:16.25,2019:17.25,2020:12.75,2021:8.75,2022:8.75,2023:16.75,2024:19.75,2025:27.75,2026:20.5};
 const DEFAULT_MARGIN=2;
+const DEFAULT_WEEKEND=[5,6];
+const ACCRUAL_MODES=["commercial15","actualActual","inclusiveMonths","nextWorkingMonth"];
 
 const I18N={
 ar:{title:"العائد السريع",casesTab:"حالات العجز",peopleTab:"الأشخاص",reportTab:"التقرير",
@@ -481,13 +524,22 @@ totalShortage:"إجمالي العجز",totalExpenses:"إجمالي المصار
 grandTotal:"الإجمالي الكلي المستحق",perPerson:"نصيب الفرد",exportExcel:"تصدير Excel",
 reportPerCase:"تفصيل الحالات",reportPerPerson:"توزيع الأشخاص",name:"الاسم",period:"الفترة",base:"الأساس",ret:"العائد",dueCol:"المستحق",share:"النصيب",
 settings:"الإعدادات",compound:"فائدة مركّبة",compoundSub:"عائد كل سنة يُضاف لأصل السنة التالية",
-roundingLbl:"توقيت التقريب",roundingSub:"وحدات صحيحة، تقريب لأقرب واحد",roundFinal:"الإجمالي",roundYear:"كل سنة",
+roundingLbl:"توقيت التقريب",roundingSub:"وحدات صحيحة، تقريب لأقرب واحد",roundFinal:"الإجمالي",roundYear:"كل سنة",roundNone:"بدون تقريب",
+roundExpensesLbl:"تقريب المصاريف الإدارية",roundExpensesSub:"تُقرَّب قيمة المصاريف لأقرب وحدة قبل إدراجها في الأساس ووعاء الاستثمار",
 ratesLbl:"جدول معدلات العائد السنوي",ratesSub:"معدل الائتمان والخصم للبنك المركزي، سنة بسنة",addYear:"+ سنة",close:"إغلاق",
 marginLbl:"الهامش المضاف",marginSub:"يُضاف فوق معدل كل سنة قبل الاحتساب",calcSection:"الاحتساب",rateSection:"جدول المعدلات",
+accrualSection:"قاعدة احتساب الأيام",
+accrualCommercial15:"قاعدة 15 يوماً (تجاري)",accrualCommercial15Sub:"يُقرَّب تاريخا الاستلام والتسوية لأقرب بداية/نهاية شهر، والاحتساب بالأشهر الكاملة",
+accrualActualActual:"أيام فعلية ÷ أيام السنة",accrualActualActualSub:"الاحتساب على عدد الأيام الفعلي بين التاريخين، مقسوماً على أيام السنة (365 أو 366)",
+accrualInclusiveMonths:"أشهر تقويمية شاملة",accrualInclusiveMonthsSub:"نفس فترة الأيام الفعلية لكن الاحتساب بعدد الأشهر الشاملة بدل الأيام",
+accrualNextWorkingMonth:"أول يوم عمل من الشهر التالي",accrualNextWorkingMonthSub:"لا يُحتسب الشهر إلا إذا بدأ/انتهى تماماً في أول/آخر يوم عمل فيه",
+weekendSection:"أيام العطلة الأسبوعية",holidaysLbl:"عطلات رسمية إضافية",holidaysSub:"تاريخ واحد في كل سطر بصيغة yyyy-mm-dd (تُستخدم فقط مع وضع «أول يوم عمل»)",
 importPeople:"استيراد ملف",template:"تنزيل نموذج",importedOk:"تم استيراد الأسماء",importFail:"تعذّرت قراءة الملف، تأكد من التنسيق",
 quickAdd:"إضافة عدد",anonPrefix:"شخص",quickAddedOk:"تمت إضافة الأشخاص",fullApp:"التطبيق الكامل (التفصيلي)",
 narrativeIntro:"العائد يُحسب فقط عن فترة كل عجز، والمستحق يُقسَّم بالتساوي على عدد الأشخاص.",
-exportedOk:"تم تصدير الملف",namesAdded:"تمت إضافة الأسماء",noPeopleWarn:"أضف شخصًا واحدًا على الأقل لعرض التوزيع",today:"اليوم"},
+exportedOk:"تم تصدير الملف",namesAdded:"تمت إضافة الأسماء",noPeopleWarn:"أضف شخصًا واحدًا على الأقل لعرض التوزيع",today:"اليوم",
+removeSelected:"حذف المحدد",clearAll:"مسح الكل",selectAllLbl:"تحديد الكل",clearedOk:"تم مسح القائمة",removedSelectedOk:"تم حذف المحدد",confirmAgain:"اضغط للتأكيد",
+dayNames:["أحد","اثنين","ثلاثاء","أربعاء","خميس","جمعة","سبت"]},
 en:{title:"ROI Express",casesTab:"Shortage Cases",peopleTab:"People",reportTab:"Report",
 casesTitle:"Shortage Cases",casesHint:"Add each shortage case separately — return is calculated only for the shortage period",addCase:"Add case",
 namePh:"Case name",shortage:"Shortage value",expenseRate:"Admin expense rate",
@@ -503,17 +555,27 @@ totalShortage:"Total shortage",totalExpenses:"Total expenses",totalReturn:"Total
 grandTotal:"Grand total due",perPerson:"Per-person share",exportExcel:"Export Excel",
 reportPerCase:"Case breakdown",reportPerPerson:"People distribution",name:"Name",period:"Period",base:"Base",ret:"Return",dueCol:"Due",share:"Share",
 settings:"Settings",compound:"Compounding",compoundSub:"Each year's return is added to next year's principal",
-roundingLbl:"Rounding point",roundingSub:"Whole currency units, standard rounding",roundFinal:"Final total",roundYear:"Per year",
+roundingLbl:"Rounding point",roundingSub:"Whole currency units, standard rounding",roundFinal:"Final total",roundYear:"Per year",roundNone:"No rounding",
+roundExpensesLbl:"Round admin expenses",roundExpensesSub:"Rounds the expense value to a whole unit before it feeds into the base and investment principal",
 ratesLbl:"Annual return rate table",ratesSub:"CBE credit & discount rate, year by year",addYear:"+ Year",close:"Close",
 marginLbl:"Added margin",marginSub:"Added on top of each year's rate before calculating",calcSection:"Calculation",rateSection:"Rate table",
+accrualSection:"Day-count basis",
+accrualCommercial15:"15-Day Rule (Commercial)",accrualCommercial15Sub:"Receipt/settlement dates snap to the nearest month start/end, calculated in whole months",
+accrualActualActual:"Actual days ÷ days in year",accrualActualActualSub:"Calculated on the real number of days between the two dates, divided by days in that year (365 or 366)",
+accrualInclusiveMonths:"Inclusive calendar months",accrualInclusiveMonthsSub:"Same period as actual days, but counted in whole inclusive months instead of days",
+accrualNextWorkingMonth:"Next working day of next month",accrualNextWorkingMonthSub:"A month only counts if it starts/ends exactly on its first/last working day",
+weekendSection:"Weekly rest days",holidaysLbl:"Extra public holidays",holidaysSub:"One date per line, yyyy-mm-dd (only used with the \"next working day\" mode)",
 importPeople:"Import file",template:"Download template",importedOk:"Names imported",importFail:"Couldn't read that file — check the format",
 quickAdd:"Add count",anonPrefix:"Person",quickAddedOk:"People added",fullApp:"Full detailed app",
 narrativeIntro:"Return is calculated only for each case's shortage period; the total due is split equally across all people.",
-exportedOk:"File exported",namesAdded:"Names added",noPeopleWarn:"Add at least one person to see the split",today:"Today"}
+exportedOk:"File exported",namesAdded:"Names added",noPeopleWarn:"Add at least one person to see the split",today:"Today",
+removeSelected:"Remove selected",clearAll:"Clear all",selectAllLbl:"Select all",clearedOk:"List cleared",removedSelectedOk:"Selected people removed",confirmAgain:"Tap again to confirm",
+dayNames:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]}
 };
 
 let state={
-  lang:"ar",theme:"light",rounding:"final",compounding:true,
+  lang:"ar",theme:"light",rounding:"final",compounding:true,roundExpenses:false,accrual:"commercial15",placeholderName:"",
+  weekend:[...DEFAULT_WEEKEND],holidays:[],
   rates:{...DEFAULT_RATES},rateMargin:DEFAULT_MARGIN,cases:[],people:[],activeTab:"cases"
 };
 let uidCounter=1;
@@ -527,13 +589,15 @@ function saveState(){}
 
 function t(){return I18N[state.lang]}
 function numberValue(v){const n=Number(v);return Number.isFinite(n)?n:0}
+function effectivePrefix(){return(state.placeholderName||"").trim()||t().anonPrefix}
+function escapeRegex(s){return s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")}
 function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 
 function roundUnit(v){const n=Number(v)||0;const s=n<0?-1:1;return s*Math.round(Math.abs(n)+1e-9)}
 
 function money(v){
-  const n=roundUnit(v);
-  return n.toLocaleString(state.lang==="ar"?"ar-EG":"en-US");
+  const n=numberValue(v);
+  return n.toLocaleString(state.lang==="ar"?"ar-EG":"en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
 }
 
 function parseDate(v){
@@ -548,13 +612,64 @@ function isoOf(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2
 function inclusiveDays(a,b){return Math.max(0,Math.round((Date.UTC(b.getFullYear(),b.getMonth(),b.getDate())-Date.UTC(a.getFullYear(),a.getMonth(),a.getDate()))/86400000)+1)}
 function daysInYear(y){return new Date(y,1,29).getMonth()===1?366:365}
 
-function yearSegments(start,end){
+function normalizeCommercialStart(d){
+  if(d.getDate()>15)return new Date(d.getFullYear(),d.getMonth()+1,1);
+  return new Date(d.getFullYear(),d.getMonth(),1);
+}
+function normalizeCommercialEnd(d){
+  if(d.getDate()>=15)return new Date(d.getFullYear(),d.getMonth()+1,0);
+  return new Date(d.getFullYear(),d.getMonth(),0);
+}
+function isWorkingDay(d){
+  if(state.weekend.includes(d.getDay()))return false;
+  return !state.holidays.includes(isoOf(d));
+}
+function nextWorkingDay(d){
+  let cur=new Date(d),guard=0;
+  while(!isWorkingDay(cur)&&guard<366){cur=new Date(cur.getFullYear(),cur.getMonth(),cur.getDate()+1);guard++}
+  return cur;
+}
+function previousWorkingDay(d){
+  let cur=new Date(d),guard=0;
+  while(!isWorkingDay(cur)&&guard<366){cur=new Date(cur.getFullYear(),cur.getMonth(),cur.getDate()-1);guard++}
+  return cur;
+}
+function normalizeNextWorkingStart(d){
+  const base=d.getDate()===1?d:new Date(d.getFullYear(),d.getMonth()+1,1);
+  return nextWorkingDay(base);
+}
+function normalizeNextWorkingEnd(d){
+  const lastOfMonth=new Date(d.getFullYear(),d.getMonth()+1,0);
+  const base=d.getDate()===lastOfMonth.getDate()?d:new Date(d.getFullYear(),d.getMonth(),0);
+  return previousWorkingDay(base);
+}
+function monthSpanSegments(effStart,effEnd){
+  const segs=[];
+  if(effStart>effEnd)return segs;
+  for(let y=effStart.getFullYear();y<=effEnd.getFullYear();y++){
+    const from=y===effStart.getFullYear()?effStart:new Date(y,0,1);
+    const to=y===effEnd.getFullYear()?effEnd:new Date(y,11,31);
+    const months=(to.getFullYear()-from.getFullYear())*12+to.getMonth()-from.getMonth()+1;
+    segs.push({year:y,from,to,days:0,factor:months/12});
+  }
+  return segs;
+}
+
+function generateSegments(start,end){
+  if(state.accrual==="commercial15"){
+    return monthSpanSegments(normalizeCommercialStart(start),normalizeCommercialEnd(end));
+  }
+  if(state.accrual==="nextWorkingMonth"){
+    return monthSpanSegments(normalizeNextWorkingStart(start),normalizeNextWorkingEnd(end));
+  }
   const segs=[];
   for(let y=start.getFullYear();y<=end.getFullYear();y++){
     const from=y===start.getFullYear()?start:new Date(y,0,1);
     const to=y===end.getFullYear()?end:new Date(y,11,31);
     const days=inclusiveDays(from,to);
-    segs.push({year:y,from,to,days,factor:days/daysInYear(y)});
+    const months=(to.getFullYear()-from.getFullYear())*12+to.getMonth()-from.getMonth()+1;
+    const factor=state.accrual==="actualActual"?days/daysInYear(y):months/12;
+    segs.push({year:y,from,to,days,factor});
   }
   return segs;
 }
@@ -562,7 +677,8 @@ function yearSegments(start,end){
 function computeCase(c){
   const shortage=numberValue(c.shortage);
   const expenseRate=numberValue(c.expenseRate);
-  const expenseValue=shortage*expenseRate/100;
+  let expenseValue=shortage*expenseRate/100;
+  if(state.roundExpenses)expenseValue=roundUnit(expenseValue);
   const base=(c.includeShortage?shortage:0)+(c.includeExpenses?expenseValue:0);
   let principal=0;
   if(c.investEnabled){
@@ -576,7 +692,7 @@ function computeCase(c){
   let rawReturn=0;
   const active=shortage>0&&(c.includeShortage||c.includeExpenses);
   if(active&&c.investEnabled&&principal>0&&hasValidDates){
-    const segs=yearSegments(start,end);
+    const segs=generateSegments(start,end);
     let running=principal;
     segs.forEach(seg=>{
       let rate;
@@ -587,16 +703,21 @@ function computeCase(c){
         else rate=numberValue(configured)+numberValue(state.rateMargin);
       }
       const raw=running*rate/100*seg.factor;
+      rawReturn+=raw;
+      if(state.compounding)running+=raw;
       const segReturn=state.rounding==="perYear"?roundUnit(raw):raw;
-      rawReturn+=segReturn;
-      if(state.compounding)running+=segReturn;
+      if(state.compounding&&state.rounding==="perYear")running+=segReturn-raw;
       segments.push({year:seg.year,from:seg.from,to:seg.to,days:seg.days,rate,returnValue:segReturn});
     });
   }
-  const due=active?roundUnit(base+rawReturn):0;
+  let returnTotal;
+  if(state.rounding==="perYear")returnTotal=segments.reduce((s,x)=>s+x.returnValue,0);
+  else if(state.rounding==="final")returnTotal=roundUnit(rawReturn);
+  else returnTotal=rawReturn;
+  const due=active?base+returnTotal:0;
   return{
     id:c.id,name:c.name,shortage,expenseRate,expenseValue,base,principal,includeExpenses:c.includeExpenses,
-    returnTotal:rawReturn,due,segments,missingYears,active,hasValidDates,
+    returnTotal,due,segments,missingYears,active,hasValidDates,
     start:c.start,end:c.end,needsDates:c.investEnabled&&principal>0&&!hasValidDates
   };
 }
@@ -609,13 +730,14 @@ function eligiblePeople(){return state.people.filter(p=>p.name.trim())}
 
 function allocateEqual(total,n){
   if(n<=0)return[];
-  const whole=Math.floor(total);
-  const base=Math.floor(whole/n);
-  let remainder=whole-base*n;
+  const totalCents=Math.round(numberValue(total)*100);
+  const baseCents=Math.floor(totalCents/n);
+  let remainder=totalCents-baseCents*n;
   const shares=[];
   for(let i=0;i<n;i++){
-    shares.push(base+(remainder>0?1:0));
+    let cents=baseCents+(remainder>0?1:0);
     if(remainder>0)remainder--;
+    shares.push(cents/100);
   }
   return shares;
 }
@@ -655,6 +777,10 @@ function renderStatic(){
   document.getElementById("pasteCancel").textContent=tt.cancel;
   document.getElementById("pasteApply").textContent=tt.applyNames;
   document.getElementById("peopleEmptyTxt").textContent=tt.noPeople;
+  document.getElementById("selectAllLbl").textContent=tt.selectAllLbl;
+  disarmConfirmBtn(document.getElementById("clearAllBtn"),tt.clearAll);
+  const removeBtn=document.getElementById("removeSelectedBtn");
+  if(removeBtn.dataset.armed!=="1")removeBtn.textContent=selectedPeopleIds.size?`${tt.removeSelected} (${selectedPeopleIds.size})`:tt.removeSelected;
   document.getElementById("exportLbl").textContent=tt.exportExcel;
   document.getElementById("settingsTitle").textContent=tt.settings;
   document.getElementById("lblCompound").textContent=tt.compound;
@@ -663,6 +789,14 @@ function renderStatic(){
   document.getElementById("subRounding").textContent=tt.roundingSub;
   document.getElementById("roundFinalLbl").textContent=tt.roundFinal;
   document.getElementById("roundYearLbl").textContent=tt.roundYear;
+  document.getElementById("roundNoneLbl").textContent=tt.roundNone;
+  document.getElementById("lblRoundExpenses").textContent=tt.roundExpensesLbl;
+  document.getElementById("subRoundExpenses").textContent=tt.roundExpensesSub;
+  document.getElementById("accrualSectionLbl").textContent=tt.accrualSection;
+  document.getElementById("weekendSectionLbl").textContent=tt.weekendSection;
+  document.getElementById("lblHolidays").textContent=tt.holidaysLbl;
+  document.getElementById("subHolidays").textContent=tt.holidaysSub;
+  document.getElementById("holidaysArea").placeholder=tt.holidaysSub;
   document.getElementById("lblRates").textContent=tt.ratesLbl;
   document.getElementById("subRates").textContent=tt.ratesSub;
   document.getElementById("addYearLbl").textContent=tt.addYear;
@@ -674,6 +808,8 @@ function renderStatic(){
   document.getElementById("importPeopleLbl").textContent=tt.importPeople;
   document.getElementById("templateLbl").textContent=tt.template;
   document.getElementById("quickCountLbl").textContent=tt.quickAdd;
+  const prefixInput=document.getElementById("quickPrefixInput");
+  if(document.activeElement!==prefixInput)prefixInput.value=effectivePrefix();
   document.getElementById("fullAppBtn").title=tt.fullApp;
   document.getElementById("fullAppBtn").setAttribute("aria-label",tt.fullApp);
 }
@@ -709,8 +845,59 @@ function renderAll(){
   renderReport();
   renderRateGrid();
   syncMarginInput();
+  renderAccrualList();
+  renderWeekendChips();
+  syncHolidaysArea();
   document.getElementById("compoundSwitch").classList.toggle("on",state.compounding);
+  document.getElementById("roundExpensesSwitch").classList.toggle("on",state.roundExpenses);
   document.querySelectorAll("#roundingSeg .segBtn").forEach(b=>b.classList.toggle("on",b.dataset.val===state.rounding));
+}
+
+function renderAccrualList(){
+  const tt=t();
+  const defs=[
+    ["commercial15",tt.accrualCommercial15,tt.accrualCommercial15Sub],
+    ["actualActual",tt.accrualActualActual,tt.accrualActualActualSub],
+    ["inclusiveMonths",tt.accrualInclusiveMonths,tt.accrualInclusiveMonthsSub],
+    ["nextWorkingMonth",tt.accrualNextWorkingMonth,tt.accrualNextWorkingMonthSub]
+  ];
+  const list=document.getElementById("accrualList");
+  list.innerHTML=defs.map(([val,title,sub])=>`
+    <div class="accrualRow ${state.accrual===val?'on':''}" onclick="setAccrual('${val}')">
+      <div class="radioDot"></div>
+      <div><div class="accTitle">${esc(title)}</div><div class="accSub">${esc(sub)}</div></div>
+    </div>`).join("");
+  document.getElementById("weekendGroup").style.display=state.accrual==="nextWorkingMonth"?"block":"none";
+}
+function setAccrual(val){
+  if(!ACCRUAL_MODES.includes(val))return;
+  state.accrual=val;
+  saveState();renderAccrualList();renderCasesList();renderCasesKpi();renderReport();
+}
+
+function renderWeekendChips(){
+  const tt=t();
+  const grid=document.getElementById("weekendChips");
+  grid.innerHTML=tt.dayNames.map((name,i)=>`
+    <div class="chip ${state.weekend.includes(i)?'on':''}" onclick="toggleWeekendDay(${i})"><span class="dot"></span>${esc(name)}</div>
+  `).join("");
+}
+function toggleWeekendDay(i){
+  if(state.weekend.includes(i))state.weekend=state.weekend.filter(d=>d!==i);
+  else state.weekend=[...state.weekend,i];
+  saveState();renderWeekendChips();renderCasesList();renderCasesKpi();renderReport();
+}
+
+function syncHolidaysArea(){
+  const el=document.getElementById("holidaysArea");
+  if(el&&document.activeElement!==el)el.value=state.holidays.join("\n");
+}
+function applyHolidaysArea(val){
+  const lines=val.split("\n").map(l=>l.trim()).filter(Boolean);
+  const valid=[];
+  lines.forEach(l=>{if(parseDate(l)&&!valid.includes(l))valid.push(l)});
+  state.holidays=valid;
+  saveState();renderCasesList();renderCasesKpi();renderReport();
 }
 
 function renderCasesKpi(){
@@ -888,6 +1075,24 @@ function applyDateISO(wrap,iso){
 }
 
 let calTarget=null,calView=null;
+let selectedPeopleIds=new Set();
+function positionCalPanel(){
+  if(!calTarget)return;
+  const panel=document.getElementById("calPanelInner");
+  const rect=calTarget.getBoundingClientRect();
+  const margin=10,panelW=270;
+  const panelH=panel.offsetHeight||360;
+  let left=rect.left;
+  if(left+panelW+margin>window.innerWidth)left=window.innerWidth-panelW-margin;
+  if(left<margin)left=margin;
+  let top=rect.bottom+8;
+  if(top+panelH+margin>window.innerHeight){
+    const above=rect.top-panelH-8;
+    top=above>=margin?above:Math.max(margin,window.innerHeight-panelH-margin);
+  }
+  panel.style.left=left+"px";
+  panel.style.top=top+"px";
+}
 function openCalendar(wrapEl){
   calTarget=wrapEl;
   const iso=wrapEl.dataset.iso;
@@ -896,18 +1101,11 @@ function openCalendar(wrapEl){
   renderCalendar();
   const overlay=document.getElementById("calOverlay");
   overlay.classList.add("open");
-  const rect=wrapEl.getBoundingClientRect();
-  const panel=document.getElementById("calPanelInner");
-  requestAnimationFrame(()=>{
-    let left=rect.left+window.scrollX;
-    const maxLeft=window.innerWidth-290;
-    if(left>maxLeft)left=maxLeft;
-    if(left<10)left=10;
-    panel.style.left=left+"px";
-    panel.style.top=(rect.bottom+window.scrollY+8)+"px";
-  });
+  requestAnimationFrame(()=>requestAnimationFrame(positionCalPanel));
 }
 function closeCalendar(){document.getElementById("calOverlay").classList.remove("open");calTarget=null}
+window.addEventListener("resize",()=>{if(calTarget)positionCalPanel()});
+window.addEventListener("scroll",()=>{if(calTarget)positionCalPanel()},true);
 function renderCalendar(){
   const tt=t();
   const panel=document.getElementById("calPanelInner");
@@ -1023,10 +1221,12 @@ function renderPeopleList(){
   empty.style.display=state.people.length?"none":"block";
   grid.innerHTML=state.people.map((p,i)=>`
     <div class="personRow glass">
+      <input type="checkbox" class="personCheck" data-id="${p.id}" ${selectedPeopleIds.has(p.id)?"checked":""}>
       <div class="idx">${i+1}</div>
       <input value="${esc(p.name)}" placeholder="${tt.personPh}" oninput="updatePerson('${p.id}',this.value)">
       <button class="rm" onclick="removePerson('${p.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
     </div>`).join("");
+  syncPeopleToolbar();
 }
 function updatePerson(id,val){
   const p=state.people.find(x=>x.id===id);
@@ -1035,24 +1235,87 @@ function updatePerson(id,val){
 }
 function removePerson(id){
   state.people=state.people.filter(p=>p.id!==id);
+  selectedPeopleIds.delete(id);
+  saveState();renderPeopleList();renderReport();
+}
+
+function syncPeopleToolbar(){
+  const tt=t();
+  const toolbar=document.getElementById("peopleToolbar");
+  toolbar.style.display=state.people.length?"flex":"none";
+  const validIds=new Set(state.people.map(p=>p.id));
+  selectedPeopleIds.forEach(id=>{if(!validIds.has(id))selectedPeopleIds.delete(id)});
+  const selectAll=document.getElementById("selectAllPeople");
+  selectAll.checked=state.people.length>0&&selectedPeopleIds.size===state.people.length;
+  selectAll.indeterminate=selectedPeopleIds.size>0&&selectedPeopleIds.size<state.people.length;
+  const removeBtn=document.getElementById("removeSelectedBtn");
+  if(selectedPeopleIds.size>0){
+    removeBtn.style.display="inline-flex";
+    if(removeBtn.dataset.armed!=="1")removeBtn.textContent=`${tt.removeSelected} (${selectedPeopleIds.size})`;
+  }else{
+    removeBtn.style.display="none";
+    disarmConfirmBtn(removeBtn,tt.removeSelected);
+  }
+}
+function togglePersonSelected(id,checked){
+  if(checked)selectedPeopleIds.add(id);else selectedPeopleIds.delete(id);
+  syncPeopleToolbar();
+}
+function toggleSelectAllPeople(checked){
+  selectedPeopleIds=checked?new Set(state.people.map(p=>p.id)):new Set();
+  renderPeopleList();
+}
+function disarmConfirmBtn(btn,label){
+  clearTimeout(btn._armTimer);
+  btn.dataset.armed="0";
+  btn.textContent=label;
+  btn.classList.remove("btn-danger-ghost");
+  btn.classList.add("btn-ghost");
+}
+function armConfirmBtn(btn,label,confirmLabel,action){
+  if(btn.dataset.armed==="1"){
+    disarmConfirmBtn(btn,label);
+    action();
+    return;
+  }
+  btn.dataset.armed="1";
+  btn.textContent=confirmLabel;
+  btn.classList.remove("btn-ghost");
+  btn.classList.add("btn-danger-ghost");
+  clearTimeout(btn._armTimer);
+  btn._armTimer=setTimeout(()=>disarmConfirmBtn(btn,label),3000);
+}
+function removeSelectedPeople(){
+  state.people=state.people.filter(p=>!selectedPeopleIds.has(p.id));
+  selectedPeopleIds=new Set();
+  saveState();renderPeopleList();renderReport();
+}
+function clearAllPeople(){
+  state.people=[];
+  selectedPeopleIds=new Set();
   saveState();renderPeopleList();renderReport();
 }
 function addAnonymousBatch(){
   const tt=t();
+  const prefix=effectivePrefix();
   const input=document.getElementById("quickCountInput");
   let n=parseInt(input.value,10);
   if(!Number.isFinite(n)||n<1)n=1;
   if(n>300)n=300;
+  const escaped=escapeRegex(prefix);
   const existingNums=state.people
-    .map(p=>{const m=p.name.trim().match(new RegExp("^"+tt.anonPrefix+"\\s+(\\d+)$"));return m?parseInt(m[1],10):0})
+    .map(p=>{const m=p.name.trim().match(new RegExp("^"+escaped+"\\s+(\\d+)$"));return m?parseInt(m[1],10):0})
     .filter(Boolean);
   let next=existingNums.length?Math.max(...existingNums)+1:state.people.length+1;
   for(let i=0;i<n;i++){
-    state.people.push(newPerson(tt.anonPrefix+" "+(next+i)));
+    state.people.push(newPerson(prefix+" "+(next+i)));
   }
   input.value="1";
   saveState();renderPeopleList();renderReport();
   toast(tt.quickAddedOk);
+  const panel=document.getElementById("pastePanel");
+  panel.style.display="block";
+  requestAnimationFrame(()=>document.getElementById("pasteArea").focus());
 }
 
 function addPerson(){
@@ -1212,7 +1475,7 @@ function exportExcel(){
   const wb=XLSX.utils.book_new();
 
   const caseAOA=[[tt.name,tt.period,tt.base,tt.ret,tt.dueCol]];
-  results.forEach(r=>caseAOA.push([csvGuard(r.name)||"—",r.start&&r.end?`${r.start} - ${r.end}`:"—",roundUnit(r.base),roundUnit(r.returnTotal),r.due]));
+  results.forEach(r=>caseAOA.push([csvGuard(r.name)||"—",r.start&&r.end?`${r.start} - ${r.end}`:"—",r.base,r.returnTotal,r.due]));
   caseAOA.push([]);
   caseAOA.push([tt.grandTotal,"","","",grand]);
   const ws1=XLSX.utils.aoa_to_sheet(caseAOA);
@@ -1252,15 +1515,32 @@ function init(){
 
   document.getElementById("addCaseBtn").addEventListener("click",addCase);
   document.getElementById("addPersonBtn").addEventListener("click",addPerson);
+  document.getElementById("selectAllPeople").addEventListener("change",function(){toggleSelectAllPeople(this.checked)});
+  document.getElementById("peopleGrid").addEventListener("change",function(e){
+    if(e.target.classList.contains("personCheck"))togglePersonSelected(e.target.dataset.id,e.target.checked);
+  });
+  document.getElementById("removeSelectedBtn").addEventListener("click",function(){
+    const tt=t();
+    armConfirmBtn(this,`${tt.removeSelected} (${selectedPeopleIds.size})`,tt.confirmAgain,()=>{removeSelectedPeople();toast(tt.removedSelectedOk)});
+  });
+  document.getElementById("clearAllBtn").addEventListener("click",function(){
+    const tt=t();
+    armConfirmBtn(this,tt.clearAll,tt.confirmAgain,()=>{clearAllPeople();toast(tt.clearedOk)});
+  });
   document.getElementById("quickCountBtn").addEventListener("click",addAnonymousBatch);
   document.getElementById("quickCountInput").addEventListener("input",function(){this.value=this.value.replace(/\D/g,"").slice(0,3)});
   document.getElementById("quickCountInput").addEventListener("keydown",function(e){if(e.key==="Enter")addAnonymousBatch()});
+  document.getElementById("quickPrefixInput").addEventListener("input",function(){state.placeholderName=this.value;saveState();});
+  document.getElementById("quickPrefixInput").addEventListener("blur",function(){if(!this.value.trim()){state.placeholderName="";this.value=t().anonPrefix;saveState();}});
+  document.getElementById("quickPrefixInput").addEventListener("keydown",function(e){if(e.key==="Enter")addAnonymousBatch()});
   document.getElementById("exportBtn").addEventListener("click",exportExcel);
   document.getElementById("langBtn").addEventListener("click",()=>switchLang(state.lang==="ar"?"en":"ar"));
   document.getElementById("themeBtn").addEventListener("click",()=>switchTheme(state.theme==="light"?"dark":"light"));
   document.getElementById("settingsBtn").addEventListener("click",()=>openPanel("settingsOverlay"));
   document.getElementById("compoundSwitch").addEventListener("click",function(){state.compounding=!state.compounding;this.classList.toggle("on",state.compounding);saveState();renderCasesList();renderCasesKpi();renderReport();});
+  document.getElementById("roundExpensesSwitch").addEventListener("click",function(){state.roundExpenses=!state.roundExpenses;this.classList.toggle("on",state.roundExpenses);saveState();renderCasesList();renderCasesKpi();renderReport();});
   document.querySelectorAll("#roundingSeg .segBtn").forEach(b=>b.addEventListener("click",function(){state.rounding=this.dataset.val;document.querySelectorAll("#roundingSeg .segBtn").forEach(x=>x.classList.toggle("on",x===this));saveState();renderCasesList();renderCasesKpi();renderReport();}));
+  document.getElementById("holidaysArea").addEventListener("change",function(){applyHolidaysArea(this.value)});
   document.getElementById("addRateYearBtn").addEventListener("click",addRateYear);
   document.getElementById("marginInput").addEventListener("input",function(){this.value=this.value.replace(/[^0-9.\-]/g,"")});
   document.getElementById("marginInput").addEventListener("change",function(){updateMargin(this.value)});
@@ -1281,8 +1561,13 @@ function init(){
     document.getElementById("pasteArea").value="";
   });
   document.getElementById("pasteApply").addEventListener("click",()=>{
+    const tt=t();
     const lines=document.getElementById("pasteArea").value.split("\n").map(l=>l.trim()).filter(Boolean);
-    lines.forEach(name=>state.people.push(newPerson(name)));
+    const anonRe=new RegExp("^"+escapeRegex(effectivePrefix())+"\\s+\\d+$");
+    const placeholders=state.people.filter(p=>anonRe.test(p.name.trim()));
+    let i=0;
+    for(;i<lines.length&&i<placeholders.length;i++)placeholders[i].name=lines[i];
+    for(;i<lines.length;i++)state.people.push(newPerson(lines[i]));
     document.getElementById("pasteArea").value="";
     document.getElementById("pastePanel").style.display="none";
     saveState();renderPeopleList();renderReport();
