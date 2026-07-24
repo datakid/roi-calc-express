@@ -91,7 +91,7 @@ body[data-lang="en"]{font-family:"Inter","Tajawal",-apple-system,sans-serif}
 @keyframes drift1{0%,100%{transform:translate(0,0)}50%{transform:translate(-3%,4%)}}
 @keyframes drift2{0%,100%{transform:translate(0,0)}50%{transform:translate(4%,-3%)}}
 
-.wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:22px 18px 80px}
+.wrap{position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:16px 14px 80px}
 
 .glass{
   background:var(--glass);
@@ -103,30 +103,53 @@ body[data-lang="en"]{font-family:"Inter","Tajawal",-apple-system,sans-serif}
 }
 .glass-strong{background:var(--glass-strong)}
 
-header.top{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 22px;margin-bottom:20px}
-.brand{display:flex;align-items:center;gap:12px}
-.mark{width:40px;height:40px;border-radius:13px;background:linear-gradient(155deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);flex-shrink:0}
-.mark svg{width:23px;height:23px}
-.brand h1{font-family:"Fraunces",serif;font-weight:600;font-size:20px;margin:0;letter-spacing:.2px}
+.appShell{display:flex;flex-direction:column;gap:16px}
+.sideCol{padding:14px;display:flex;flex-direction:column;gap:12px}
+.sideBrand{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:6px 8px}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(155deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);flex-shrink:0}
+.mark svg{width:21px;height:21px}
+.brand h1{font-family:"Fraunces",serif;font-weight:600;font-size:18px;margin:0;letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 body[data-lang="ar"] .brand h1{font-family:"Tajawal",sans-serif;font-weight:800}
-.topActions{display:flex;align-items:center;gap:8px}
-.iconBtn{width:38px;height:38px;border-radius:var(--r-pill);border:1px solid var(--line);background:rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink);transition:all .25s var(--ease)}
+.topActions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.iconBtn{width:36px;height:36px;border-radius:var(--r-pill);border:1px solid var(--line);background:rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink);transition:all .25s var(--ease);flex-shrink:0}
 [data-theme="dark"] .iconBtn{background:rgba(255,255,255,.05)}
 .iconBtn:hover{background:var(--accent-soft);border-color:var(--accent);transform:translateY(-1px)}
-.iconBtn svg{width:17px;height:17px}
-.langBtn{font-weight:700;font-size:12.5px;letter-spacing:.4px}
+.iconBtn:active{transform:scale(.92)}
+.iconBtn svg{width:16px;height:16px}
+.langBtn{font-weight:700;font-size:12px;letter-spacing:.4px}
 
-nav.tabs{display:flex;gap:6px;padding:6px;margin-bottom:22px;position:sticky;top:12px;z-index:20}
-.tabBtn{flex:1;border:none;background:transparent;padding:11px 14px;border-radius:var(--r-md);font-size:13.5px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .3s var(--ease);position:relative}
-.tabBtn.active{background:var(--accent);color:var(--accent-ink);box-shadow:var(--shadow-sm)}
-.tabBtn:not(.active):hover{color:var(--ink);background:rgba(255,255,255,.3)}
+nav.tabs{display:flex;gap:2px;padding:5px;position:sticky;top:10px;z-index:20;background:rgba(255,255,255,.4);border:1px solid var(--line);border-radius:var(--r-md)}
+[data-theme="dark"] nav.tabs{background:rgba(255,255,255,.05)}
+.tabIndicator{position:absolute;left:0;top:5px;bottom:5px;border-radius:calc(var(--r-md) - 3px);background:var(--accent);box-shadow:var(--shadow-sm);transition:transform .38s var(--ease),width .38s var(--ease),height .38s var(--ease);z-index:0;will-change:transform}
+.tabBtn{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;border:none;background:transparent;padding:11px 10px;border-radius:calc(var(--r-md) - 3px);font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;transition:color .3s var(--ease);position:relative;z-index:1;white-space:nowrap}
+.tabBtn.active{color:var(--accent-ink)}
+.tabBtn:not(.active):hover{color:var(--ink)}
+.tabIcon{display:none;flex-shrink:0}
+.tabIcon svg{width:16px;height:16px;display:block}
 
+.mainCol{min-width:0}
 .section{display:none;animation:fadeUp .4s var(--ease)}
 .section.active{display:block}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
+@media(min-width:980px){
+  .wrap{max-width:1360px;padding:26px 24px 90px}
+  .appShell{flex-direction:row;align-items:flex-start;gap:26px}
+  .sideCol{width:260px;flex-shrink:0;position:sticky;top:26px;padding:18px}
+  .sideBrand{flex-direction:column;align-items:flex-start;gap:16px;padding:8px 10px 4px}
+  .sideBrand .topActions{width:100%}
+  .brand h1{font-size:19px}
+  nav.tabs{flex-direction:column;position:static;background:transparent;border:none;padding:0;gap:3px}
+  .tabIndicator{left:0;top:0;bottom:auto;height:0}
+  .tabBtn{justify-content:flex-start;padding:12px 14px;width:100%}
+  .tabIcon{display:flex}
+  .mainCol{flex:1;min-width:0}
+}
+
 .kpiRow{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:18px}
-.kpi{padding:16px 18px;border-radius:var(--r-md)}
+.kpi{padding:16px 18px;border-radius:var(--r-md);transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.kpi:hover{transform:translateY(-2px)}
 .kpi .lbl{font-size:11.5px;color:var(--muted);font-weight:700;letter-spacing:.3px;margin-bottom:6px}
 .kpi .val{font-family:"Fraunces",serif;font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
 body[data-lang="ar"] .kpi .val{font-family:"Tajawal",sans-serif;font-weight:800}
@@ -138,9 +161,11 @@ body[data-lang="ar"] .sectionHead h2{font-family:"Tajawal",sans-serif;font-weigh
 .sectionHead .hint{font-size:12px;color:var(--muted);margin-top:2px}
 
 .btn{display:inline-flex;align-items:center;gap:7px;border:none;border-radius:var(--r-pill);padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;transition:all .25s var(--ease);font-family:inherit;white-space:nowrap}
+.btn:active{transform:scale(.96)}
 .btn svg{width:15px;height:15px}
 .btn-primary{background:var(--accent);color:var(--accent-ink);box-shadow:var(--shadow-sm)}
 .btn-primary:hover{background:var(--accent-hover);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.btn-primary:active{transform:translateY(0) scale(.96)}
 .btn-ghost{background:rgba(255,255,255,.4);color:var(--ink);border:1px solid var(--line)}
 [data-theme="dark"] .btn-ghost{background:rgba(255,255,255,.06)}
 .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
@@ -148,7 +173,8 @@ body[data-lang="ar"] .sectionHead h2{font-family:"Tajawal",sans-serif;font-weigh
 .btn-danger-ghost{background:transparent;color:var(--danger);border:1px solid var(--danger-soft)}
 .btn-danger-ghost:hover{background:var(--danger-soft)}
 
-.caseCard{padding:20px 22px;border-radius:var(--r-lg);margin-bottom:16px;transition:box-shadow .3s var(--ease)}
+.caseCard{padding:20px 22px;border-radius:var(--r-lg);transition:box-shadow .35s var(--ease),transform .35s var(--ease);min-width:0}
+.caseCard:hover{box-shadow:var(--shadow-lg)}
 .caseCard .cardTop{display:flex;align-items:center;gap:12px;margin-bottom:16px}
 .caseNameInput{flex:1;background:transparent;border:none;border-bottom:2px solid transparent;font-family:"Fraunces",serif;font-size:17px;font-weight:600;color:var(--ink);padding:4px 2px;outline:none;transition:border-color .25s}
 body[data-lang="ar"] .caseNameInput{font-family:"Tajawal",sans-serif;font-weight:700}
@@ -165,6 +191,7 @@ body[data-lang="ar"] .caseNameInput{font-family:"Tajawal",sans-serif;font-weight
 
 .chipRow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
 .chip{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:var(--r-pill);border:1px solid var(--line);background:rgba(255,255,255,.35);font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .22s var(--ease);user-select:none}
+.chip:active{transform:scale(.96)}
 [data-theme="dark"] .chip{background:rgba(255,255,255,.05)}
 .chip .dot{width:8px;height:8px;border-radius:50%;background:var(--faint);transition:all .22s}
 .chip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
@@ -174,6 +201,7 @@ body[data-lang="ar"] .caseNameInput{font-family:"Tajawal",sans-serif;font-weight
 [data-theme="dark"] .segGroup{background:rgba(255,255,255,.05)}
 .segBtn{border:none;background:transparent;padding:7px 13px;border-radius:var(--r-pill);font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .22s var(--ease)}
 .segBtn.on{background:var(--accent);color:var(--accent-ink)}
+.segBtn:active{transform:scale(.94)}
 
 .dateRow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
 .dateField{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.5);border:1px solid var(--line);border-radius:var(--r-sm);padding:6px 8px;width:100%;transition:all .2s var(--ease)}
@@ -193,7 +221,8 @@ body[data-lang="ar"] .caseNameInput{font-family:"Tajawal",sans-serif;font-weight
 .advBody.open{display:block}
 
 .growthTrack{display:flex;align-items:flex-end;gap:3px;height:30px;margin:14px 0}
-.growthTrack .gbar{flex:1;background:var(--accent-soft);border-radius:4px 4px 0 0;min-height:3px;position:relative;transition:all .3s var(--ease)}
+.growthTrack .gbar{flex:1;background:var(--accent-soft);border-radius:4px 4px 0 0;min-height:3px;position:relative;transition:background .3s var(--ease);transform-origin:bottom;animation:growIn .5s var(--ease) backwards}
+@keyframes growIn{from{transform:scaleY(0)}to{transform:scaleY(1)}}
 .growthTrack .gbar.pos{background:linear-gradient(180deg,var(--accent),var(--accent-2))}
 .growthTrack .gbar .yr{position:absolute;bottom:-16px;inset-inline-start:50%;transform:translateX(-50%);font-size:9px;color:var(--faint);font-weight:700}
 [dir=rtl] .growthTrack .gbar .yr{transform:translateX(50%)}
@@ -246,34 +275,57 @@ body[data-lang="ar"] .grandTotalBlock .val{font-family:"Tajawal",sans-serif;font
 .ringDeco{position:absolute;top:50%;inset-inline-start:50%;transform:translate(-50%,-50%);width:180px;height:180px;border-radius:50%;border:1px solid var(--accent-soft);z-index:-1}
 [dir=rtl] .ringDeco{transform:translate(50%,-50%)}
 
-.overlay{position:fixed;inset:0;background:rgba(20,18,15,.28);backdrop-filter:blur(4px);z-index:90;display:none;align-items:flex-start;justify-content:center;padding:60px 16px}
-.overlay.open{display:flex}
-.panel{width:100%;max-width:420px;padding:22px;border-radius:var(--r-xl);animation:panelIn .3s var(--ease)}
-@keyframes panelIn{from{opacity:0;transform:translateY(-10px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
-.panelHead{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.panelHead h3{font-family:"Fraunces",serif;font-size:16px;margin:0;font-weight:600}
+.overlay{position:fixed;inset:0;background:rgba(20,18,15,0);backdrop-filter:blur(0px);z-index:90;display:flex;align-items:flex-start;justify-content:center;padding:60px 16px;pointer-events:none;transition:background .32s var(--ease),backdrop-filter .32s var(--ease)}
+.overlay.open{background:rgba(20,18,15,.28);backdrop-filter:blur(4px);pointer-events:auto}
+.panel{width:100%;max-width:440px;padding:24px;border-radius:var(--r-xl);opacity:0;transform:translateY(-14px) scale(.97);transition:opacity .32s var(--ease),transform .38s var(--ease)}
+.overlay.open .panel{opacity:1;transform:translateY(0) scale(1)}
+.panelHead{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.panelHead h3{font-family:"Fraunces",serif;font-size:18px;margin:0;font-weight:600;letter-spacing:.1px}
 body[data-lang="ar"] .panelHead h3{font-family:"Tajawal",sans-serif;font-weight:800}
-.closeX{border:none;background:transparent;color:var(--muted);cursor:pointer;padding:4px;border-radius:8px}
-.closeX:hover{color:var(--ink);background:rgba(255,255,255,.3)}
+.closeX{border:none;background:transparent;color:var(--muted);cursor:pointer;padding:6px;border-radius:var(--r-pill);display:flex;transition:all .2s var(--ease)}
+.closeX:hover{color:var(--ink);background:rgba(255,255,255,.35);transform:rotate(90deg)}
+[data-theme="dark"] .closeX:hover{background:rgba(255,255,255,.08)}
 
-.rateGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:280px;overflow-y:auto;padding-inline-end:4px;margin-bottom:14px}
-.rateRow{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.4);border:1px solid var(--line);border-radius:var(--r-sm);padding:6px 10px}
+.settingsScroll{max-height:min(60vh,520px);overflow-y:auto;margin:6px -6px 0;padding:0 6px 2px}
+.settingGroup{padding:14px 0 6px}
+.settingGroup+.settingGroup{border-top:1px solid var(--line);margin-top:4px}
+.eyebrow{font-size:10.5px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent-2);margin-bottom:8px}
+body[data-lang="ar"] .eyebrow{letter-spacing:.3px}
+
+.marginRow{display:flex;align-items:center;justify-content:space-between;padding:10px 2px;gap:12px;margin-bottom:2px}
+.marginInputWrap{display:inline-flex;align-items:center;gap:6px;background:var(--accent-soft);border:1px solid transparent;border-radius:var(--r-pill);padding:8px 6px 8px 14px;flex-shrink:0;transition:all .2s var(--ease)}
+[dir=rtl] .marginInputWrap{padding:8px 14px 8px 6px}
+.marginInputWrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.marginInput{width:44px;border:none;background:transparent;text-align:center;font-size:15px;font-weight:800;color:var(--accent);outline:none;font-family:inherit;font-variant-numeric:tabular-nums}
+.marginPct{font-size:12px;font-weight:700;color:var(--accent);background:rgba(255,255,255,.55);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+[data-theme="dark"] .marginPct{background:rgba(0,0,0,.25)}
+
+.ratesHead{display:flex;flex-direction:column;gap:2px;padding:10px 2px 10px;margin-top:2px;border-top:1px dashed var(--line)}
+.ratesHead>span:first-child{font-size:12.5px;font-weight:700}
+.ratesHead .sub{font-size:11px;color:var(--muted)}
+
+.rateGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:230px;overflow-y:auto;padding-inline-end:4px;padding-bottom:2px;margin-bottom:10px}
+.rateRow{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.4);border:1px solid var(--line);border-radius:var(--r-sm);padding:6px 10px;transition:border-color .2s var(--ease),background .2s var(--ease)}
 [data-theme="dark"] .rateRow{background:rgba(255,255,255,.04)}
+.rateRow:focus-within{border-color:var(--accent-2);background:var(--accent-2-soft)}
 .rateRow .yr{font-size:12px;font-weight:700;color:var(--muted);width:36px}
 .rateRow input{flex:1;border:none;background:transparent;text-align:center;font-size:13px;font-weight:600;color:var(--ink);outline:none;font-family:inherit}
 .rateRow .pct{font-size:11px;color:var(--faint)}
 
-.settingRow{display:flex;align-items:center;justify-content:space-between;padding:12px 2px;border-bottom:1px solid var(--line)}
+.settingRow{display:flex;align-items:center;justify-content:space-between;padding:11px 2px;border-bottom:1px solid var(--line)}
 .settingRow:last-child{border-bottom:none}
 .settingRow .lbl2{font-size:13px;font-weight:700}
 .settingRow .sub{font-size:11px;color:var(--muted);margin-top:2px}
 
-.switch{width:42px;height:24px;border-radius:var(--r-pill);background:var(--faint);position:relative;cursor:pointer;transition:background .25s;flex-shrink:0}
+.switch{width:42px;height:24px;border-radius:var(--r-pill);background:var(--faint);position:relative;cursor:pointer;transition:background .3s var(--ease);flex-shrink:0}
 .switch.on{background:var(--accent)}
-.switch .knob{position:absolute;top:3px;inset-inline-start:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:inset-inline-start .25s var(--ease);box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.switch:active .knob{width:21px}
+.switch .knob{position:absolute;top:3px;inset-inline-start:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:inset-inline-start .3s var(--ease),width .18s var(--ease);box-shadow:0 1px 3px rgba(0,0,0,.2)}
 .switch.on .knob{inset-inline-start:21px}
+.switch.on:active .knob{inset-inline-start:18px}
 
-.calPanel{position:absolute;z-index:100;padding:16px;border-radius:var(--r-lg);width:270px}
+.calPanel{position:absolute;z-index:100;padding:16px;border-radius:var(--r-lg);width:270px;opacity:0;transform:translateY(-8px) scale(.97);transition:opacity .26s var(--ease),transform .3s var(--ease)}
+.overlay.open .calPanel{opacity:1;transform:translateY(0) scale(1)}
 .calHead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px}
 .calHead .yrInput{width:64px;text-align:center;background:rgba(255,255,255,.5);border:1px solid var(--line);border-radius:8px;padding:5px 4px;font-size:13px;font-weight:700;color:var(--ink);font-family:inherit}
 [data-theme="dark"] .calHead .yrInput{background:rgba(255,255,255,.06)}
@@ -294,11 +346,21 @@ body[data-lang="ar"] .panelHead h3{font-family:"Tajawal",sans-serif;font-weight:
 .toast{padding:10px 18px;border-radius:var(--r-pill);font-size:12.5px;font-weight:700;box-shadow:var(--shadow-md);animation:toastIn .3s var(--ease)}
 @keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-@media(max-width:640px){
+.casesList{display:grid;grid-template-columns:1fr;gap:16px}
+#reportBody{display:grid;grid-template-columns:1fr;gap:18px;align-items:start}
+
+@media(max-width:520px){
   .dateRow{grid-template-columns:1fr}
   .kpiRow{grid-template-columns:repeat(2,1fr)}
-  header.top{padding:14px}
+  .sideBrand{padding:4px 4px 2px}
   .caseCard{padding:16px}
+  .reportCard{padding:18px}
+}
+@media(min-width:760px){
+  .casesList{grid-template-columns:repeat(auto-fill,minmax(360px,600px))}
+}
+@media(min-width:1180px){
+  #reportBody{grid-template-columns:minmax(280px,380px) 1fr}
 }
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-thumb{background:var(--faint);border-radius:8px}
@@ -307,25 +369,30 @@ body[data-lang="ar"] .panelHead h3{font-family:"Tajawal",sans-serif;font-weight:
 <body data-lang="ar">
 <div class="orbfield"><div class="orb orb1"></div><div class="orb orb2"></div></div>
 <div class="wrap">
-  <header class="top glass" id="topHeader">
-    <div class="brand">
-      <div class="mark"><svg viewBox="0 0 24 24" fill="none"><path d="M3.5 19c1.4-6.2 3.4-10.6 6-10.6s3.6 5.3 5.6 5.3 3-8.2 5.4-8.2" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20.3" cy="5.4" r="1.6" fill="#fff"/></svg></div>
-      <h1 id="brandTitle">العائد السريع</h1>
+ <div class="appShell">
+  <aside class="sideCol glass" id="sideCol">
+    <div class="sideBrand">
+      <div class="brand">
+        <div class="mark"><svg viewBox="0 0 24 24" fill="none"><path d="M3.5 19c1.4-6.2 3.4-10.6 6-10.6s3.6 5.3 5.6 5.3 3-8.2 5.4-8.2" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20.3" cy="5.4" r="1.6" fill="#fff"/></svg></div>
+        <h1 id="brandTitle">العائد السريع</h1>
+      </div>
+      <div class="topActions">
+        <a class="iconBtn" id="fullAppBtn" href="https://roi-calculator-eight-omega.vercel.app/" target="_blank" rel="noopener noreferrer" title="full app"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg></a>
+        <button class="iconBtn" id="settingsBtn" title="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+        <button class="iconBtn" id="themeBtn" title="theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+        <button class="iconBtn langBtn" id="langBtn">EN</button>
+      </div>
     </div>
-    <div class="topActions">
-      <a class="iconBtn" id="fullAppBtn" href="https://roi-calculator-eight-omega.vercel.app/" target="_blank" rel="noopener noreferrer" title="full app"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg></a>
-      <button class="iconBtn" id="settingsBtn" title="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
-      <button class="iconBtn" id="themeBtn" title="theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
-      <button class="iconBtn langBtn" id="langBtn">EN</button>
-    </div>
-  </header>
 
-  <nav class="tabs glass" id="tabNav">
-    <button class="tabBtn" data-tab="cases">حالات العجز</button>
-    <button class="tabBtn" data-tab="people">الأشخاص</button>
-    <button class="tabBtn" data-tab="report">التقرير</button>
-  </nav>
+    <nav class="tabs" id="tabNav">
+      <div class="tabIndicator" id="tabIndicator"></div>
+      <button class="tabBtn" data-tab="cases"><span class="tabIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><span class="tabLbl">حالات العجز</span></button>
+      <button class="tabBtn" data-tab="people"><span class="tabIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span class="tabLbl">الأشخاص</span></button>
+      <button class="tabBtn" data-tab="report"><span class="tabIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18.4 8.6 12 15l-3.5-3.5L4 16"/></svg></span><span class="tabLbl">التقرير</span></button>
+    </nav>
+  </aside>
 
+  <main class="mainCol">
   <section class="section" id="sec-cases">
     <div class="kpiRow" id="casesKpi"></div>
     <div class="sectionHead">
@@ -378,28 +445,52 @@ body[data-lang="ar"] .panelHead h3{font-family:"Tajawal",sans-serif;font-weight:
       <button class="btn btn-primary" id="exportBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg><span id="exportLbl">تصدير Excel</span></button>
     </div>
   </section>
+  </main>
+ </div>
 </div>
 
 <div class="overlay" id="settingsOverlay">
-  <div class="panel glass-strong">
-    <div class="panelHead"><h3 id="settingsTitle">الإعدادات</h3><button class="closeX" onclick="closePanel('settingsOverlay')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
-    <div class="settingRow">
-      <div><div class="lbl2" id="lblCompound">فائدة مركّبة</div><div class="sub" id="subCompound">عائد كل سنة يُضاف لأصل السنة التالية</div></div>
-      <div class="switch" id="compoundSwitch"><div class="knob"></div></div>
+  <div class="panel glass-strong" id="settingsPanel">
+    <div class="panelHead">
+      <h3 id="settingsTitle">الإعدادات</h3>
+      <button class="closeX" onclick="closePanel('settingsOverlay')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
     </div>
-    <div class="settingRow">
-      <div><div class="lbl2" id="lblRounding">توقيت التقريب</div><div class="sub" id="subRounding">وحدات صحيحة، تقريب لأقرب واحد</div></div>
-      <div class="segGroup" id="roundingSeg">
-        <button class="segBtn" data-val="final" id="roundFinalLbl">الإجمالي</button>
-        <button class="segBtn" data-val="perYear" id="roundYearLbl">كل سنة</button>
+
+    <div class="settingsScroll">
+      <div class="settingGroup">
+        <div class="eyebrow" id="calcSectionLbl">الاحتساب</div>
+        <div class="settingRow">
+          <div><div class="lbl2" id="lblCompound">فائدة مركّبة</div><div class="sub" id="subCompound">عائد كل سنة يُضاف لأصل السنة التالية</div></div>
+          <div class="switch" id="compoundSwitch"><div class="knob"></div></div>
+        </div>
+        <div class="settingRow" style="border-bottom:none">
+          <div><div class="lbl2" id="lblRounding">توقيت التقريب</div><div class="sub" id="subRounding">وحدات صحيحة، تقريب لأقرب واحد</div></div>
+          <div class="segGroup" id="roundingSeg">
+            <button class="segBtn" data-val="final" id="roundFinalLbl">الإجمالي</button>
+            <button class="segBtn" data-val="perYear" id="roundYearLbl">كل سنة</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="settingGroup">
+        <div class="eyebrow" id="rateSectionLbl">جدول المعدلات</div>
+        <div class="marginRow">
+          <div><div class="lbl2" id="lblMargin">الهامش المضاف</div><div class="sub" id="subMargin">يُضاف فوق معدل كل سنة قبل الاحتساب</div></div>
+          <div class="marginInputWrap">
+            <input type="text" inputmode="decimal" id="marginInput" class="marginInput">
+            <span class="marginPct">%</span>
+          </div>
+        </div>
+        <div class="ratesHead">
+          <span id="lblRates">جدول معدلات العائد السنوي</span>
+          <span class="sub" id="subRates">حسب معدل الائتمان والخصم للبنك المركزي</span>
+        </div>
+        <div class="rateGrid" id="rateGrid"></div>
+        <button class="btn btn-ghost btn-sm" id="addRateYearBtn" style="align-self:flex-start;margin-top:2px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span id="addYearLbl">سنة</span></button>
       </div>
     </div>
-    <div class="settingRow" style="border-bottom:none;flex-direction:column;align-items:stretch;gap:10px">
-      <div><div class="lbl2" id="lblRates">جدول معدلات العائد السنوي</div><div class="sub" id="subRates">حسب معدل الائتمان والخصم للبنك المركزي +٢٪</div></div>
-      <div class="rateGrid" id="rateGrid"></div>
-      <button class="btn btn-ghost btn-sm" id="addRateYearBtn" style="align-self:flex-start">+ سنة</button>
-    </div>
-    <button class="btn btn-primary" id="settingsDoneBtn" style="width:100%;justify-content:center;margin-top:6px">إغلاق</button>
+
+    <button class="btn btn-primary" id="settingsDoneBtn" style="width:100%;justify-content:center;margin-top:16px">إغلاق</button>
   </div>
 </div>
 
@@ -407,7 +498,8 @@ body[data-lang="ar"] .panelHead h3{font-family:"Tajawal",sans-serif;font-weight:
 <div class="toastHost" id="toastHost"></div>
 
 <script>
-const DEFAULT_RATES={2017:15.25,2018:16.25,2019:17.25,2020:12.75,2021:8.75,2022:8.75,2023:16.75,2024:19.75,2025:27.75,2026:20.5};
+const DEFAULT_RATES={2017:13.25,2018:14.25,2019:15.25,2020:10.75,2021:6.75,2022:6.75,2023:14.75,2024:17.75,2025:25.75,2026:18.5};
+const DEFAULT_MARGIN=2;
 
 const I18N={
 ar:{title:"العائد السريع",casesTab:"حالات العجز",peopleTab:"الأشخاص",reportTab:"التقرير",
@@ -426,7 +518,8 @@ grandTotal:"الإجمالي الكلي المستحق",perPerson:"نصيب ال
 reportPerCase:"تفصيل الحالات",reportPerPerson:"توزيع الأشخاص",name:"الاسم",period:"الفترة",base:"الأساس",ret:"العائد",dueCol:"المستحق",share:"النصيب",
 settings:"الإعدادات",compound:"فائدة مركّبة",compoundSub:"عائد كل سنة يُضاف لأصل السنة التالية",
 roundingLbl:"توقيت التقريب",roundingSub:"وحدات صحيحة، تقريب لأقرب واحد",roundFinal:"الإجمالي",roundYear:"كل سنة",
-ratesLbl:"جدول معدلات العائد السنوي",ratesSub:"حسب معدل الائتمان والخصم للبنك المركزي +٢٪",addYear:"+ سنة",close:"إغلاق",
+ratesLbl:"جدول معدلات العائد السنوي",ratesSub:"معدل الائتمان والخصم للبنك المركزي، سنة بسنة",addYear:"+ سنة",close:"إغلاق",
+marginLbl:"الهامش المضاف",marginSub:"يُضاف فوق معدل كل سنة قبل الاحتساب",calcSection:"الاحتساب",rateSection:"جدول المعدلات",
 importPeople:"استيراد ملف",template:"تنزيل نموذج",importedOk:"تم استيراد الأسماء",importFail:"تعذّرت قراءة الملف، تأكد من التنسيق",
 quickAdd:"إضافة عدد",anonPrefix:"شخص",quickAddedOk:"تمت إضافة الأشخاص",fullApp:"التطبيق الكامل (التفصيلي)",
 narrativeIntro:"العائد يُحسب فقط عن فترة كل عجز، والمستحق يُقسَّم بالتساوي على عدد الأشخاص.",
@@ -447,7 +540,8 @@ grandTotal:"Grand total due",perPerson:"Per-person share",exportExcel:"Export Ex
 reportPerCase:"Case breakdown",reportPerPerson:"People distribution",name:"Name",period:"Period",base:"Base",ret:"Return",dueCol:"Due",share:"Share",
 settings:"Settings",compound:"Compounding",compoundSub:"Each year's return is added to next year's principal",
 roundingLbl:"Rounding point",roundingSub:"Whole currency units, standard rounding",roundFinal:"Final total",roundYear:"Per year",
-ratesLbl:"Annual return rate table",ratesSub:"Based on CBE credit & discount rate +2%",addYear:"+ Year",close:"Close",
+ratesLbl:"Annual return rate table",ratesSub:"CBE credit & discount rate, year by year",addYear:"+ Year",close:"Close",
+marginLbl:"Added margin",marginSub:"Added on top of each year's rate before calculating",calcSection:"Calculation",rateSection:"Rate table",
 importPeople:"Import file",template:"Download template",importedOk:"Names imported",importFail:"Couldn't read that file — check the format",
 quickAdd:"Add count",anonPrefix:"Person",quickAddedOk:"People added",fullApp:"Full detailed app",
 narrativeIntro:"Return is calculated only for each case's shortage period; the total due is split equally across all people.",
@@ -456,7 +550,7 @@ exportedOk:"File exported",namesAdded:"Names added",noPeopleWarn:"Add at least o
 
 let state={
   lang:"ar",theme:"light",rounding:"final",compounding:true,
-  rates:{...DEFAULT_RATES},cases:[],people:[],activeTab:"cases"
+  rates:{...DEFAULT_RATES},rateMargin:DEFAULT_MARGIN,cases:[],people:[],activeTab:"cases"
 };
 let uidCounter=1;
 function uid(){return "id"+(uidCounter++)+"_"+Date.now().toString(36)}
@@ -464,17 +558,8 @@ function uid(){return "id"+(uidCounter++)+"_"+Date.now().toString(36)}
 function newCase(){return{id:uid(),name:"",shortage:"",expenseRate:"",includeShortage:true,includeExpenses:false,investEnabled:true,investOn:"shortage",start:"",end:"",customRateEnabled:false,customRate:"",advOpen:false}}
 function newPerson(name){return{id:uid(),name:name||""}}
 
-function loadState(){
-  try{
-    const raw=localStorage.getItem("roiExpressState");
-    if(!raw)return;
-    const saved=JSON.parse(raw);
-    state={...state,...saved,rates:{...DEFAULT_RATES,...(saved.rates||{})}};
-  }catch(e){}
-}
-function saveState(){
-  try{localStorage.setItem("roiExpressState",JSON.stringify(state))}catch(e){}
-}
+function loadState(){}
+function saveState(){}
 
 function t(){return I18N[state.lang]}
 function numberValue(v){const n=Number(v);return Number.isFinite(n)?n:0}
@@ -535,7 +620,7 @@ function computeCase(c){
       else{
         const configured=state.rates[seg.year];
         if(configured===undefined||configured===null||configured===""){missingYears.push(seg.year);rate=0}
-        else rate=numberValue(configured);
+        else rate=numberValue(configured)+numberValue(state.rateMargin);
       }
       const raw=running*rate/100*seg.factor;
       const segReturn=state.rounding==="perYear"?roundUnit(raw):raw;
@@ -580,6 +665,7 @@ function switchLang(lang){
   saveState();
   renderStatic();
   renderAll();
+  requestAnimationFrame(()=>moveTabIndicator(true));
 }
 function switchTheme(theme){
   state.theme=theme;
@@ -615,8 +701,12 @@ function renderStatic(){
   document.getElementById("roundYearLbl").textContent=tt.roundYear;
   document.getElementById("lblRates").textContent=tt.ratesLbl;
   document.getElementById("subRates").textContent=tt.ratesSub;
-  document.getElementById("addRateYearBtn").textContent=tt.addYear;
+  document.getElementById("addYearLbl").textContent=tt.addYear;
   document.getElementById("settingsDoneBtn").textContent=tt.close;
+  document.getElementById("calcSectionLbl").textContent=tt.calcSection;
+  document.getElementById("rateSectionLbl").textContent=tt.rateSection;
+  document.getElementById("lblMargin").textContent=tt.marginLbl;
+  document.getElementById("subMargin").textContent=tt.marginSub;
   document.getElementById("importPeopleLbl").textContent=tt.importPeople;
   document.getElementById("templateLbl").textContent=tt.template;
   document.getElementById("quickCountLbl").textContent=tt.quickAdd;
@@ -624,12 +714,31 @@ function renderStatic(){
   document.getElementById("fullAppBtn").setAttribute("aria-label",tt.fullApp);
 }
 
+function moveTabIndicator(instant){
+  const active=document.querySelector('.tabBtn[data-tab="'+state.activeTab+'"]');
+  const ind=document.getElementById("tabIndicator");
+  if(!active||!ind)return;
+  const nav=active.parentElement;
+  const navRect=nav.getBoundingClientRect(),btnRect=active.getBoundingClientRect();
+  const offsetX=btnRect.left-navRect.left;
+  const offsetY=btnRect.top-navRect.top;
+  if(instant)ind.style.transition="none";
+  ind.style.width=btnRect.width+"px";
+  ind.style.height=btnRect.height+"px";
+  ind.style.transform="translate("+offsetX+"px,"+offsetY+"px)";
+  if(instant)requestAnimationFrame(()=>requestAnimationFrame(()=>{ind.style.transition=""}));
+}
 function setActiveTab(tab){
+  const changed=state.activeTab!==tab;
   state.activeTab=tab;
   document.querySelectorAll(".tabBtn").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
-  document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.id==="sec-"+tab));
+  const run=()=>document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.id==="sec-"+tab));
+  if(changed&&document.startViewTransition)document.startViewTransition(run);
+  else run();
+  moveTabIndicator();
   saveState();
 }
+window.addEventListener("resize",()=>moveTabIndicator(true));
 
 function renderAll(){
   renderCasesKpi();
@@ -637,6 +746,7 @@ function renderAll(){
   renderPeopleList();
   renderReport();
   renderRateGrid();
+  syncMarginInput();
   document.getElementById("compoundSwitch").classList.toggle("on",state.compounding);
   document.querySelectorAll("#roundingSeg .segBtn").forEach(b=>b.classList.toggle("on",b.dataset.val===state.rounding));
 }
@@ -658,25 +768,19 @@ function renderCasesKpi(){
 function growthTrackHTML(segments){
   if(!segments.length)return "";
   const max=Math.max(...segments.map(s=>Math.abs(s.returnValue)),1);
-  const bars=segments.map(s=>{
+  const bars=segments.map((s,i)=>{
     const h=Math.max(3,Math.round((Math.abs(s.returnValue)/max)*30));
-    return `<div class="gbar ${s.returnValue>0?'pos':''}" style="height:${h}px"><span class="yr">${s.year}</span></div>`;
+    return `<div class="gbar ${s.returnValue>0?'pos':''}" style="height:${h}px;animation-delay:${i*35}ms"><span class="yr">${s.year}</span></div>`;
   }).join("");
   return `<div class="growthWrap"><div class="growthTrack">${bars}</div></div>`;
 }
 
-function renderCasesList(){
+function caseCardHTML(c){
   const tt=t();
-  const list=document.getElementById("casesList");
-  if(!state.cases.length){
-    list.innerHTML=`<div class="glass emptyState"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p>${tt.noCases}</p><p style="margin-top:4px;font-size:12px">${tt.addFirst}</p></div>`;
-    return;
-  }
-  list.innerHTML=state.cases.map(c=>{
-    const r=computeCase(c);
-    const missingLine=r.missingYears.length?`<div class="warnLine"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>${tt.missingRate} ${r.missingYears.join("، ")}</div>`:"";
-    const dateErr=r.needsDates?`<div class="errLine"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>${tt.invalidDates}</div>`:"";
-    return `
+  const r=computeCase(c);
+  const missingLine=r.missingYears.length?`<div class="warnLine"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>${tt.missingRate} ${r.missingYears.join("، ")}</div>`:"";
+  const dateErr=r.needsDates?`<div class="errLine"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>${tt.invalidDates}</div>`:"";
+  return `
     <div class="caseCard glass" data-id="${c.id}">
       <div class="cardTop">
         <input class="caseNameInput" placeholder="${tt.namePh}" value="${esc(c.name)}" oninput="updateCase('${c.id}','name',this.value)">
@@ -707,7 +811,7 @@ function renderCasesList(){
       ${growthTrackHTML(r.segments)}
       <div class="detailsAdv">
         <div class="advToggle" onclick="toggleAdv('${c.id}')">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" style="transform:rotate(${c.advOpen?90:0}deg);transition:transform .2s"><path d="M9 6l6 6-6 6"/></svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" style="transform:rotate(${c.advOpen?90:0}deg);transition:transform .2s var(--ease)"><path d="M9 6l6 6-6 6"/></svg>
           ${tt.advanced}
         </div>
         <div class="advBody ${c.advOpen?'open':''}">
@@ -720,7 +824,25 @@ function renderCasesList(){
         <div class="dueChip">${tt.due}: ${money(r.due)}</div>
       </div>
     </div>`;
-  }).join("");
+}
+
+function renderCasesList(){
+  const tt=t();
+  const list=document.getElementById("casesList");
+  if(!state.cases.length){
+    list.innerHTML=`<div class="glass emptyState"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p>${tt.noCases}</p><p style="margin-top:4px;font-size:12px">${tt.addFirst}</p></div>`;
+    return;
+  }
+  list.innerHTML=state.cases.map(caseCardHTML).join("");
+}
+
+function refreshSingleCard(id){
+  const c=state.cases.find(x=>x.id===id);
+  const card=document.querySelector(`.caseCard[data-id="${id}"]`);
+  if(!c||!card)return;
+  const temp=document.createElement("div");
+  temp.innerHTML=caseCardHTML(c).trim();
+  card.replaceWith(temp.firstElementChild);
 }
 
 function dateFieldHTML(iso,caseId,key){
@@ -884,7 +1006,7 @@ function updateCaseFull(id,key,value){
   if(!c)return;
   c[key]=value;
   saveState();
-  renderCasesList();renderCasesKpi();renderReport();
+  refreshSingleCard(id);renderCasesKpi();renderReport();
 }
 function refreshCaseComputed(id){
   const tt=t();
@@ -915,13 +1037,13 @@ function toggleCaseBool(id,key){
   if(!c)return;
   c[key]=!c[key];
   saveState();
-  renderCasesList();renderCasesKpi();renderReport();
+  refreshSingleCard(id);renderCasesKpi();renderReport();
 }
 function toggleAdv(id){
   const c=state.cases.find(x=>x.id===id);
   if(!c)return;
   c.advOpen=!c.advOpen;
-  renderCasesList();
+  refreshSingleCard(id);
 }
 function removeCase(id){
   state.cases=state.cases.filter(c=>c.id!==id);
@@ -1051,6 +1173,14 @@ function addRateYear(){
   state.rates[next]=0;
   saveState();renderRateGrid();
 }
+function syncMarginInput(){
+  const el=document.getElementById("marginInput");
+  if(el&&document.activeElement!==el)el.value=state.rateMargin;
+}
+function updateMargin(val){
+  state.rateMargin=val===""?0:numberValue(val);
+  saveState();renderCasesList();renderCasesKpi();renderReport();
+}
 
 function toast(msg){
   const host=document.getElementById("toastHost");
@@ -1170,6 +1300,8 @@ function init(){
   document.getElementById("compoundSwitch").addEventListener("click",function(){state.compounding=!state.compounding;this.classList.toggle("on",state.compounding);saveState();renderCasesList();renderCasesKpi();renderReport();});
   document.querySelectorAll("#roundingSeg .segBtn").forEach(b=>b.addEventListener("click",function(){state.rounding=this.dataset.val;document.querySelectorAll("#roundingSeg .segBtn").forEach(x=>x.classList.toggle("on",x===this));saveState();renderCasesList();renderCasesKpi();renderReport();}));
   document.getElementById("addRateYearBtn").addEventListener("click",addRateYear);
+  document.getElementById("marginInput").addEventListener("input",function(){this.value=this.value.replace(/[^0-9.\-]/g,"")});
+  document.getElementById("marginInput").addEventListener("change",function(){updateMargin(this.value)});
   document.getElementById("settingsDoneBtn").addEventListener("click",()=>closePanel("settingsOverlay"));
   document.getElementById("templateBtn").addEventListener("click",downloadPeopleTemplate);
   document.getElementById("importBtn").addEventListener("click",()=>document.getElementById("importFileInput").click());
@@ -1197,6 +1329,8 @@ function init(){
 
   renderStatic();
   renderAll();
+  requestAnimationFrame(()=>moveTabIndicator(true));
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>moveTabIndicator(true));
 }
 init();
 </script>
