@@ -251,6 +251,11 @@ table.dataTable tr:hover td{background:rgba(255,255,255,.25)}
 .tableWrap{overflow-x:auto;border-radius:var(--r-md)}
 .num{font-weight:600}
 .rowName{font-weight:700}
+.caseDetailRow td{padding:0 0 16px}
+.segDetailWrap{background:rgba(255,255,255,.28);border-radius:var(--r-md);padding:12px 14px}
+[data-theme="dark"] .segDetailWrap{background:rgba(255,255,255,.04)}
+.segTable th,.segTable td{font-size:12px;padding:8px 10px}
+.segNote{font-size:11px;color:var(--muted);padding:8px 2px 0;line-height:1.6}
 
 .reportCard{padding:24px;border-radius:var(--r-lg);margin-bottom:18px}
 .narrative{font-size:13.5px;line-height:1.9;color:var(--ink)}
@@ -527,6 +532,7 @@ namesPh:"اسم في كل سطر",cancel:"إلغاء",applyNames:"إضافة ا�
 totalShortage:"إجمالي العجز",totalExpenses:"إجمالي المصاريف",totalReturn:"إجمالي العائد",peopleCount:"عدد الأشخاص",
 grandTotal:"الإجمالي الكلي المستحق",perPerson:"نصيب الفرد",exportExcel:"تصدير Excel",
 reportPerCase:"تفصيل الحالات",reportPerPerson:"توزيع الأشخاص",name:"الاسم",period:"الفترة",base:"الأساس",ret:"العائد",dueCol:"المستحق",share:"النصيب",
+yearlyBreakdown:"التفصيل السنوي",yearCol:"السنة",daysCol:"الأيام",factorCol:"المعامل",rateCol:"المعدل",openingBalance:"الرصيد الابتدائي",closingBalance:"الرصيد الختامي",noSegmentsRow:"لا يوجد احتساب عائد لهذه الحالة",segFormulaNote:"العائد = الرصيد الابتدائي × المعدل × المعامل، ويُضاف للرصيد الختامي عند تفعيل الفائدة المركّبة",
 settings:"الإعدادات",compound:"فائدة مركّبة",compoundSub:"عائد كل سنة يُضاف لأصل السنة التالية",
 roundingLbl:"توقيت التقريب",roundingSub:"وحدات صحيحة، تقريب لأقرب واحد",roundFinal:"الإجمالي",roundYear:"كل سنة",roundNone:"بدون تقريب",
 roundExpensesLbl:"تقريب المصاريف الإدارية",roundExpensesSub:"تُقرَّب قيمة المصاريف لأقرب وحدة قبل إدراجها في الأساس ووعاء الاستثمار",
@@ -558,6 +564,7 @@ namesPh:"One name per line",cancel:"Cancel",applyNames:"Add names",personPh:"Per
 totalShortage:"Total shortage",totalExpenses:"Total expenses",totalReturn:"Total return",peopleCount:"People",
 grandTotal:"Grand total due",perPerson:"Per-person share",exportExcel:"Export Excel",
 reportPerCase:"Case breakdown",reportPerPerson:"People distribution",name:"Name",period:"Period",base:"Base",ret:"Return",dueCol:"Due",share:"Share",
+yearlyBreakdown:"Yearly breakdown",yearCol:"Year",daysCol:"Days",factorCol:"Factor",rateCol:"Rate",openingBalance:"Opening balance",closingBalance:"Closing balance",noSegmentsRow:"No return calculated for this case",segFormulaNote:"Return = opening balance × rate × factor; added to the closing balance when compounding is on.",
 settings:"Settings",compound:"Compounding",compoundSub:"Each year's return is added to next year's principal",
 roundingLbl:"Rounding point",roundingSub:"Whole currency units, standard rounding",roundFinal:"Final total",roundYear:"Per year",roundNone:"No rounding",
 roundExpensesLbl:"Round admin expenses",roundExpensesSub:"Rounds the expense value to a whole unit before it feeds into the base and investment principal",
@@ -645,12 +652,14 @@ function previousWorkingDay(d){
   return cur;
 }
 function normalizeNextWorkingStart(d){
-  const base=d.getDate()===1?d:new Date(d.getFullYear(),d.getMonth()+1,1);
+  const monthFirstWorking=nextWorkingDay(new Date(d.getFullYear(),d.getMonth(),1));
+  const base=isoOf(d)===isoOf(monthFirstWorking)?d:new Date(d.getFullYear(),d.getMonth()+1,1);
   return nextWorkingDay(base);
 }
 function normalizeNextWorkingEnd(d){
   const lastOfMonth=new Date(d.getFullYear(),d.getMonth()+1,0);
-  const base=d.getDate()===lastOfMonth.getDate()?d:new Date(d.getFullYear(),d.getMonth(),0);
+  const monthLastWorking=previousWorkingDay(lastOfMonth);
+  const base=isoOf(d)===isoOf(monthLastWorking)?d:new Date(d.getFullYear(),d.getMonth(),0);
   return previousWorkingDay(base);
 }
 function monthSpanSegments(effStart,effEnd){
@@ -660,7 +669,7 @@ function monthSpanSegments(effStart,effEnd){
     const from=y===effStart.getFullYear()?effStart:new Date(y,0,1);
     const to=y===effEnd.getFullYear()?effEnd:new Date(y,11,31);
     const months=(to.getFullYear()-from.getFullYear())*12+to.getMonth()-from.getMonth()+1;
-    segs.push({year:y,from,to,days:0,factor:months/12});
+    segs.push({year:y,from,to,days:inclusiveDays(from,to),factor:months/12});
   }
   return segs;
 }
@@ -712,12 +721,13 @@ function computeCase(c){
         if(configured===undefined||configured===null||configured===""){missingYears.push(seg.year);rate=0}
         else rate=numberValue(configured)+numberValue(state.rateMargin);
       }
+      const openingBalance=running;
       const raw=running*rate/100*seg.factor;
       rawReturn+=raw;
       if(state.compounding)running+=raw;
       const segReturn=state.rounding==="perYear"?roundUnit(raw):raw;
       if(state.compounding&&state.rounding==="perYear")running+=segReturn-raw;
-      segments.push({year:seg.year,from:seg.from,to:seg.to,days:seg.days,rate,returnValue:segReturn});
+      segments.push({year:seg.year,from:seg.from,to:seg.to,days:seg.days,factor:seg.factor,rate,openingBalance,returnValue:segReturn,closingBalance:running});
     });
   }
   let returnTotal;
@@ -1337,6 +1347,29 @@ function addPerson(){
   });
 }
 
+function segmentsTableHTML(r){
+  const tt=t();
+  if(!r.segments.length)return `<div class="segDetailWrap"><div class="emptyState" style="padding:10px 6px"><p>${tt.noSegmentsRow}</p></div></div>`;
+  const rows=r.segments.map(s=>`
+    <tr>
+      <td class="num">${s.year}</td>
+      <td>${isoOf(s.from)} → ${isoOf(s.to)}</td>
+      <td class="num">${s.days}</td>
+      <td class="num">${s.factor.toFixed(4)}</td>
+      <td class="num">${s.rate.toFixed(2)}%</td>
+      <td class="num">${moneyHTML(s.openingBalance)}</td>
+      <td class="num">${moneyHTML(s.returnValue)}</td>
+      <td class="num">${moneyHTML(s.closingBalance)}</td>
+    </tr>`).join("");
+  return `<div class="segDetailWrap">
+    <div class="tableWrap"><table class="dataTable segTable">
+      <thead><tr><th>${tt.yearCol}</th><th>${tt.period}</th><th>${tt.daysCol}</th><th>${tt.factorCol}</th><th>${tt.rateCol}</th><th>${tt.openingBalance}</th><th>${tt.ret}</th><th>${tt.closingBalance}</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>
+    <div class="segNote">${tt.segFormulaNote}</div>
+  </div>`;
+}
+
 function renderReport(){
   const tt=t();
   const results=computeAll();
@@ -1354,7 +1387,8 @@ function renderReport(){
       <td class="num">${moneyHTML(r.base)}</td>
       <td class="num">${moneyHTML(r.returnTotal)}</td>
       <td class="num" style="color:var(--accent);font-weight:700">${moneyHTML(r.due)}</td>
-    </tr>`).join("");
+    </tr>
+    ${r.segments.length?`<tr class="caseDetailRow"><td colspan="5">${segmentsTableHTML(r)}</td></tr>`:""}`).join("");
 
   const peopleRows=people.map((p,i)=>`
     <tr><td class="rowName">${esc(p.name)}</td><td class="num">${moneyHTML(shares[i]||0)}</td></tr>
@@ -1394,7 +1428,7 @@ function renderRateGrid(){
   grid.innerHTML=years.map(y=>`
     <div class="rateRow">
       <div class="yr">${y}</div>
-      <input type="text" inputmode="decimal" value="${state.rates[y]}" onchange="updateRate(${y},this.value)">
+      <input type="text" inputmode="decimal" value="${state.rates[y]}" oninput="this.value=this.value.replace(/[^0-9.]/g,'')" onchange="updateRate(${y},this.value)">
       <div class="pct">%</div>
     </div>`).join("");
 }
@@ -1406,7 +1440,7 @@ function addRateYear(){
   const years=Object.keys(state.rates).map(Number);
   const next=years.length?Math.max(...years)+1:new Date().getFullYear();
   state.rates[next]=0;
-  saveState();renderRateGrid();
+  saveState();renderRateGrid();renderCasesList();renderCasesKpi();renderReport();
 }
 function syncMarginInput(){
   const el=document.getElementById("marginInput");
@@ -1490,6 +1524,11 @@ function exportExcel(){
   caseAOA.push([tt.grandTotal,"","","",grand]);
   const ws1=XLSX.utils.aoa_to_sheet(caseAOA);
   XLSX.utils.book_append_sheet(wb,ws1,tt.reportPerCase.slice(0,28));
+
+  const segAOA=[[tt.name,tt.yearCol,tt.period,tt.daysCol,tt.factorCol,tt.rateCol,tt.openingBalance,tt.ret,tt.closingBalance]];
+  results.forEach(r=>r.segments.forEach(s=>segAOA.push([csvGuard(r.name)||"—",s.year,`${isoOf(s.from)} - ${isoOf(s.to)}`,s.days,s.factor,s.rate,s.openingBalance,s.returnValue,s.closingBalance])));
+  const ws3=XLSX.utils.aoa_to_sheet(segAOA);
+  XLSX.utils.book_append_sheet(wb,ws3,tt.yearlyBreakdown.slice(0,28));
 
   const peopleAOA=[[tt.name,tt.share]];
   people.forEach((p,i)=>peopleAOA.push([csvGuard(p.name),shares[i]||0]));
