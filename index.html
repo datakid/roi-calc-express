@@ -174,7 +174,8 @@ body[data-lang="ar"] .caseNameInput{font-family:"Tajawal",sans-serif;font-weight
 .field.suffix .unit{position:absolute;inset-inline-end:12px;top:34px;font-size:12px;color:var(--faint);font-weight:600;pointer-events:none}
 
 .chipRow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
-.chip{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:var(--r-pill);border:1px solid var(--line);background:rgba(255,255,255,.35);font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .22s var(--ease);user-select:none}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:var(--r-pill);border:1px solid var(--line);background:rgba(255,255,255,.35);font-size:12.5px;font-weight:700;font-family:inherit;color:var(--muted);cursor:pointer;transition:all .22s var(--ease);user-select:none}
+.chip:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
 .chip:active{transform:scale(.96)}
 [data-theme="dark"] .chip{background:rgba(255,255,255,.05)}
 .chip .dot{width:8px;height:8px;border-radius:50%;background:var(--faint);transition:all .22s}
@@ -191,6 +192,8 @@ body[data-lang="ar"] .caseNameInput{font-family:"Tajawal",sans-serif;font-weight
 .dateField{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.5);border:1px solid var(--line);border-radius:var(--r-sm);padding:6px 8px;width:100%;transition:all .2s var(--ease)}
 [data-theme="dark"] .dateField{background:rgba(255,255,255,.04)}
 .dateField:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.dateField.invalid{border-color:var(--danger)}
+.dateField.invalid:focus-within{box-shadow:0 0 0 3px var(--danger-soft)}
 .dateSeg{border:none;background:transparent;color:var(--ink);font-size:14.5px;font-weight:600;text-align:center;outline:none;font-variant-numeric:tabular-nums;font-family:inherit}
 .dateSeg.dSeg,.dateSeg.mSeg{width:24px}
 .dateSeg.ySeg{width:42px}
@@ -200,7 +203,8 @@ body[data-lang="ar"] .caseNameInput{font-family:"Tajawal",sans-serif;font-weight
 .dateField .calBtn svg{width:16px;height:16px}
 
 .detailsAdv{margin-top:2px}
-.advToggle{font-size:12px;font-weight:700;color:var(--accent-2);cursor:pointer;display:inline-flex;align-items:center;gap:5px;user-select:none}
+.advToggle{font-size:12px;font-weight:700;font-family:inherit;color:var(--accent-2);cursor:pointer;display:inline-flex;align-items:center;gap:5px;user-select:none;border:none;background:transparent;padding:0}
+.advToggle:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
 .advBody{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);display:none}
 .advBody.open{display:block}
 
@@ -293,7 +297,8 @@ body[data-lang="ar"] .eyebrow{letter-spacing:.3px}
 [data-theme="dark"] .marginPct{background:rgba(0,0,0,.25)}
 
 .accrualList{display:flex;flex-direction:column;gap:2px}
-.accrualRow{display:flex;align-items:flex-start;gap:10px;padding:10px 4px;cursor:pointer;border-radius:var(--r-sm);transition:background .2s var(--ease)}
+.accrualRow{display:flex;align-items:flex-start;gap:10px;padding:10px 4px;cursor:pointer;border-radius:var(--r-sm);transition:background .2s var(--ease);border:none;background:transparent;width:100%;text-align:start;font-family:inherit}
+.accrualRow:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .accrualRow:hover{background:var(--accent-soft)}
 .accrualRow .radioDot{width:16px;height:16px;border-radius:50%;border:2px solid var(--faint);flex-shrink:0;margin-top:2px;position:relative;transition:border-color .2s}
 .accrualRow.on .radioDot{border-color:var(--accent)}
@@ -317,7 +322,8 @@ body[data-lang="ar"] .eyebrow{letter-spacing:.3px}
 .settingRow .lbl2{font-size:13px;font-weight:700}
 .settingRow .sub{font-size:11px;color:var(--muted);margin-top:2px}
 
-.switch{width:42px;height:24px;border-radius:var(--r-pill);background:var(--faint);position:relative;cursor:pointer;transition:background .3s var(--ease);flex-shrink:0}
+.switch{width:42px;height:24px;border-radius:var(--r-pill);background:var(--faint);position:relative;cursor:pointer;transition:background .3s var(--ease);flex-shrink:0;border:none;padding:0}
+.switch:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
 .switch.on{background:var(--accent)}
 .switch:active .knob{width:21px}
 .switch .knob{position:absolute;top:3px;inset-inline-start:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:inset-inline-start .3s var(--ease),width .18s var(--ease);box-shadow:0 1px 3px rgba(0,0,0,.2)}
@@ -334,7 +340,8 @@ body[data-lang="ar"] .eyebrow{letter-spacing:.3px}
 .calArrow:hover{background:var(--accent-soft);color:var(--accent)}
 .calGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:10px}
 .calGrid .dow{font-size:10px;color:var(--faint);text-align:center;font-weight:700;padding:4px 0}
-.calGrid .day{font-size:12.5px;text-align:center;padding:7px 0;border-radius:8px;cursor:pointer;color:var(--ink);font-variant-numeric:tabular-nums}
+.calGrid .day{font-size:12.5px;text-align:center;padding:7px 0;border-radius:8px;cursor:pointer;color:var(--ink);font-variant-numeric:tabular-nums;border:none;background:transparent;font-family:inherit;width:100%}
+.calGrid .day:focus-visible{outline:2px solid var(--accent-2);outline-offset:1px}
 .calGrid .day:hover{background:var(--accent-soft)}
 .calGrid .day.muted{color:var(--faint)}
 .calGrid .day.today{outline:1px solid var(--accent-2)}
@@ -455,19 +462,19 @@ body[data-lang="ar"] .eyebrow{letter-spacing:.3px}
         <div class="eyebrow" id="calcSectionLbl">الاحتساب</div>
         <div class="settingRow">
           <div><div class="lbl2" id="lblCompound">فائدة مركّبة</div><div class="sub" id="subCompound">عائد كل سنة يُضاف لأصل السنة التالية</div></div>
-          <div class="switch" id="compoundSwitch"><div class="knob"></div></div>
+          <button type="button" class="switch" id="compoundSwitch" role="switch" aria-checked="true"><div class="knob"></div></button>
         </div>
         <div class="settingRow">
           <div><div class="lbl2" id="lblRounding">توقيت التقريب</div><div class="sub" id="subRounding">وحدات صحيحة، تقريب لأقرب واحد</div></div>
           <div class="segGroup" id="roundingSeg">
-            <button class="segBtn" data-val="final" id="roundFinalLbl">الإجمالي</button>
-            <button class="segBtn" data-val="perYear" id="roundYearLbl">كل سنة</button>
-            <button class="segBtn" data-val="none" id="roundNoneLbl">بدون تقريب</button>
+            <button type="button" class="segBtn" data-val="final" id="roundFinalLbl">الإجمالي</button>
+            <button type="button" class="segBtn" data-val="perYear" id="roundYearLbl">كل سنة</button>
+            <button type="button" class="segBtn" data-val="none" id="roundNoneLbl">بدون تقريب</button>
           </div>
         </div>
         <div class="settingRow" style="border-bottom:none">
           <div><div class="lbl2" id="lblRoundExpenses">تقريب المصاريف الإدارية</div><div class="sub" id="subRoundExpenses">تُقرَّب قيمة المصاريف لأقرب وحدة قبل إدراجها في الأساس ووعاء الاستثمار</div></div>
-          <div class="switch" id="roundExpensesSwitch"><div class="knob"></div></div>
+          <button type="button" class="switch" id="roundExpensesSwitch" role="switch" aria-checked="false"><div class="knob"></div></button>
         </div>
       </div>
 
@@ -546,6 +553,7 @@ accrualNextWorkingMonth:"أول يوم عمل من الشهر التالي",accr
 weekendSection:"أيام العطلة الأسبوعية",holidaysLbl:"عطلات رسمية إضافية",holidaysSub:"تاريخ واحد في كل سطر بصيغة yyyy-mm-dd (تُستخدم فقط مع وضع «أول يوم عمل»)",
 importPeople:"استيراد ملف",template:"تنزيل نموذج",importedOk:"تم استيراد الأسماء",importFail:"تعذّرت قراءة الملف، تأكد من التنسيق",
 quickAdd:"إضافة عدد",anonPrefix:"شخص",quickAddedOk:"تمت إضافة الأشخاص",fullApp:"التطبيق الكامل (التفصيلي)",
+themeToggle:"تبديل المظهر",customRateMargin:"إضافة الهامش فوق هذا المعدل",allWeekendBlocked:"لا يمكن اعتبار كل أيام الأسبوع عطلة، يجب أن يتبقى يوم عمل واحد على الأقل",
 narrativeIntro:"العائد يُحسب فقط عن فترة كل عجز، والمستحق يُقسَّم بالتساوي على عدد الأشخاص.",
 exportedOk:"تم تصدير الملف",namesAdded:"تمت إضافة الأسماء",noPeopleWarn:"أضف شخصًا واحدًا على الأقل لعرض التوزيع",today:"اليوم",
 removeSelected:"حذف المحدد",clearAll:"مسح الكل",selectAllLbl:"تحديد الكل",clearedOk:"تم مسح القائمة",removedSelectedOk:"تم حذف المحدد",confirmAgain:"اضغط للتأكيد",
@@ -578,6 +586,7 @@ accrualNextWorkingMonth:"Next working day of next month",accrualNextWorkingMonth
 weekendSection:"Weekly rest days",holidaysLbl:"Extra public holidays",holidaysSub:"One date per line, yyyy-mm-dd (only used with the \"next working day\" mode)",
 importPeople:"Import file",template:"Download template",importedOk:"Names imported",importFail:"Couldn't read that file — check the format",
 quickAdd:"Add count",anonPrefix:"Person",quickAddedOk:"People added",fullApp:"Full detailed app",
+themeToggle:"Toggle theme",customRateMargin:"Also add the margin on top of this rate",allWeekendBlocked:"All 7 days can't be rest days — at least one working day must remain",
 narrativeIntro:"Return is calculated only for each case's shortage period; the total due is split equally across all people.",
 exportedOk:"File exported",namesAdded:"Names added",noPeopleWarn:"Add at least one person to see the split",today:"Today",
 removeSelected:"Remove selected",clearAll:"Clear all",selectAllLbl:"Select all",clearedOk:"List cleared",removedSelectedOk:"Selected people removed",confirmAgain:"Tap again to confirm",
@@ -592,7 +601,7 @@ let state={
 let uidCounter=1;
 function uid(){return "id"+(uidCounter++)+"_"+Date.now().toString(36)}
 
-function newCase(){return{id:uid(),name:"",shortage:"",expenseRate:"",includeShortage:true,includeExpenses:false,investEnabled:true,investOn:"shortage",start:"",end:"",customRateEnabled:false,customRate:"",advOpen:false}}
+function newCase(){return{id:uid(),name:"",shortage:"",expenseRate:"",includeShortage:true,includeExpenses:false,investEnabled:true,investOn:"shortage",start:"",end:"",customRateEnabled:false,customRate:"",customRateIncludeMargin:false,advOpen:false}}
 function newPerson(name){return{id:uid(),name:name||""}}
 
 function loadState(){}
@@ -709,13 +718,13 @@ function computeCase(c){
   const segments=[];
   const missingYears=[];
   let rawReturn=0;
-  const active=shortage>0&&(c.includeShortage||c.includeExpenses);
+  const active=shortage>0&&(c.includeShortage||c.includeExpenses||(c.investEnabled&&principal>0));
   if(active&&c.investEnabled&&principal>0&&hasValidDates){
     const segs=generateSegments(start,end);
     let running=principal;
     segs.forEach(seg=>{
       let rate;
-      if(c.customRateEnabled){rate=numberValue(c.customRate)}
+      if(c.customRateEnabled){rate=numberValue(c.customRate)+(c.customRateIncludeMargin?numberValue(state.rateMargin):0)}
       else{
         const configured=state.rates[seg.year];
         if(configured===undefined||configured===null||configured===""){missingYears.push(seg.year);rate=0}
@@ -750,7 +759,8 @@ function eligiblePeople(){return state.people.filter(p=>p.name.trim())}
 
 function allocateEqual(total,n){
   if(n<=0)return[];
-  const totalCents=Math.round(numberValue(total)*100);
+  const t=numberValue(total);
+  const totalCents=Math.round(t*100+(t>=0?1e-7:-1e-7));
   const baseCents=Math.floor(totalCents/n);
   let remainder=totalCents-baseCents*n;
   const shares=[];
@@ -832,6 +842,10 @@ function renderStatic(){
   if(document.activeElement!==prefixInput)prefixInput.value=effectivePrefix();
   document.getElementById("fullAppBtn").title=tt.fullApp;
   document.getElementById("fullAppBtn").setAttribute("aria-label",tt.fullApp);
+  document.getElementById("settingsBtn").title=tt.settings;
+  document.getElementById("settingsBtn").setAttribute("aria-label",tt.settings);
+  document.getElementById("themeBtn").title=tt.themeToggle;
+  document.getElementById("themeBtn").setAttribute("aria-label",tt.themeToggle);
 }
 
 function moveTabIndicator(instant){
@@ -869,8 +883,10 @@ function renderAll(){
   renderWeekendChips();
   syncHolidaysArea();
   document.getElementById("compoundSwitch").classList.toggle("on",state.compounding);
+  document.getElementById("compoundSwitch").setAttribute("aria-checked",String(state.compounding));
   document.getElementById("roundExpensesSwitch").classList.toggle("on",state.roundExpenses);
-  document.querySelectorAll("#roundingSeg .segBtn").forEach(b=>b.classList.toggle("on",b.dataset.val===state.rounding));
+  document.getElementById("roundExpensesSwitch").setAttribute("aria-checked",String(state.roundExpenses));
+  document.querySelectorAll("#roundingSeg .segBtn").forEach(b=>{b.classList.toggle("on",b.dataset.val===state.rounding);b.setAttribute("aria-pressed",String(b.dataset.val===state.rounding));});
 }
 
 function renderAccrualList(){
@@ -882,11 +898,12 @@ function renderAccrualList(){
     ["nextWorkingMonth",tt.accrualNextWorkingMonth,tt.accrualNextWorkingMonthSub]
   ];
   const list=document.getElementById("accrualList");
+  list.setAttribute("role","radiogroup");
   list.innerHTML=defs.map(([val,title,sub])=>`
-    <div class="accrualRow ${state.accrual===val?'on':''}" onclick="setAccrual('${val}')">
+    <button type="button" class="accrualRow ${state.accrual===val?'on':''}" role="radio" aria-checked="${state.accrual===val}" onclick="setAccrual('${val}')">
       <div class="radioDot"></div>
       <div><div class="accTitle">${esc(title)}</div><div class="accSub">${esc(sub)}</div></div>
-    </div>`).join("");
+    </button>`).join("");
   document.getElementById("weekendGroup").style.display=state.accrual==="nextWorkingMonth"?"block":"none";
 }
 function setAccrual(val){
@@ -899,12 +916,16 @@ function renderWeekendChips(){
   const tt=t();
   const grid=document.getElementById("weekendChips");
   grid.innerHTML=tt.dayNames.map((name,i)=>`
-    <div class="chip ${state.weekend.includes(i)?'on':''}" onclick="toggleWeekendDay(${i})"><span class="dot"></span>${esc(name)}</div>
+    <button type="button" class="chip ${state.weekend.includes(i)?'on':''}" role="checkbox" aria-checked="${state.weekend.includes(i)}" onclick="toggleWeekendDay(${i})"><span class="dot"></span>${esc(name)}</button>
   `).join("");
 }
 function toggleWeekendDay(i){
-  if(state.weekend.includes(i))state.weekend=state.weekend.filter(d=>d!==i);
-  else state.weekend=[...state.weekend,i];
+  if(state.weekend.includes(i)){
+    state.weekend=state.weekend.filter(d=>d!==i);
+  }else{
+    if(state.weekend.length>=6){toast(t().allWeekendBlocked);return;}
+    state.weekend=[...state.weekend,i];
+  }
   saveState();renderWeekendChips();renderCasesList();renderCasesKpi();renderReport();
 }
 
@@ -960,17 +981,17 @@ function caseCardHTML(c){
         <div class="field suffix"><label>${tt.expenseRate}</label><input type="text" inputmode="decimal" value="${esc(c.expenseRate)}" oninput="updateCase('${c.id}','expenseRate',this.value.replace(/[^0-9.]/g,''))"><span class="unit">%</span></div>
       </div>
       <div class="chipRow">
-        <div class="chip ${c.includeShortage?'on':''}" onclick="toggleCaseBool('${c.id}','includeShortage')"><span class="dot"></span>${tt.includeShortage}</div>
-        <div class="chip ${c.includeExpenses?'on':''}" onclick="toggleCaseBool('${c.id}','includeExpenses')"><span class="dot"></span>${tt.includeExpenses}</div>
-        <div class="chip ${c.investEnabled?'on':''}" onclick="toggleCaseBool('${c.id}','investEnabled')"><span class="dot"></span>${tt.investEnabled}</div>
+        <button type="button" class="chip ${c.includeShortage?'on':''}" role="checkbox" aria-checked="${c.includeShortage}" onclick="toggleCaseBool('${c.id}','includeShortage')"><span class="dot"></span>${tt.includeShortage}</button>
+        <button type="button" class="chip ${c.includeExpenses?'on':''}" role="checkbox" aria-checked="${c.includeExpenses}" onclick="toggleCaseBool('${c.id}','includeExpenses')"><span class="dot"></span>${tt.includeExpenses}</button>
+        <button type="button" class="chip ${c.investEnabled?'on':''}" role="checkbox" aria-checked="${c.investEnabled}" onclick="toggleCaseBool('${c.id}','investEnabled')"><span class="dot"></span>${tt.investEnabled}</button>
       </div>
       ${c.investEnabled?`
       <div style="margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
         <label style="font-size:11.5px;font-weight:700;color:var(--muted)">${tt.investOn}</label>
         <div class="segGroup">
-          <button class="segBtn ${c.investOn==='shortage'?'on':''}" onclick="updateCaseFull('${c.id}','investOn','shortage')">${tt.onShortage}</button>
-          <button class="segBtn ${c.investOn==='expenses'?'on':''}" onclick="updateCaseFull('${c.id}','investOn','expenses')">${tt.onExpenses}</button>
-          <button class="segBtn ${c.investOn==='both'?'on':''}" onclick="updateCaseFull('${c.id}','investOn','both')">${tt.onBoth}</button>
+          <button type="button" class="segBtn ${c.investOn==='shortage'?'on':''}" aria-pressed="${c.investOn==='shortage'}" onclick="updateCaseFull('${c.id}','investOn','shortage')">${tt.onShortage}</button>
+          <button type="button" class="segBtn ${c.investOn==='expenses'?'on':''}" aria-pressed="${c.investOn==='expenses'}" onclick="updateCaseFull('${c.id}','investOn','expenses')">${tt.onExpenses}</button>
+          <button type="button" class="segBtn ${c.investOn==='both'?'on':''}" aria-pressed="${c.investOn==='both'}" onclick="updateCaseFull('${c.id}','investOn','both')">${tt.onBoth}</button>
         </div>
       </div>`:""}
       <div class="dateRow">
@@ -979,12 +1000,15 @@ function caseCardHTML(c){
       </div>
       ${growthTrackHTML(r.segments)}
       <div class="detailsAdv">
-        <div class="advToggle" onclick="toggleAdv('${c.id}')">
+        <button type="button" class="advToggle" aria-expanded="${c.advOpen}" onclick="toggleAdv('${c.id}')">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" style="transform:rotate(${c.advOpen?90:0}deg);transition:transform .2s var(--ease)"><path d="M9 6l6 6-6 6"/></svg>
           ${tt.advanced}
-        </div>
+        </button>
         <div class="advBody ${c.advOpen?'open':''}">
-          <div class="chip ${c.customRateEnabled?'on':''}" onclick="toggleCaseBool('${c.id}','customRateEnabled')"><span class="dot"></span>${tt.customRate}</div>
+          <div class="chipRow" style="margin-bottom:0">
+            <button type="button" class="chip ${c.customRateEnabled?'on':''}" role="checkbox" aria-checked="${c.customRateEnabled}" onclick="toggleCaseBool('${c.id}','customRateEnabled')"><span class="dot"></span>${tt.customRate}</button>
+            ${c.customRateEnabled?`<button type="button" class="chip ${c.customRateIncludeMargin?'on':''}" role="checkbox" aria-checked="${c.customRateIncludeMargin}" onclick="toggleCaseBool('${c.id}','customRateIncludeMargin')"><span class="dot"></span>${tt.customRateMargin}</button>`:""}
+          </div>
           ${c.customRateEnabled?`<div style="margin-top:10px;max-width:160px"><div class="field suffix"><input type="text" inputmode="decimal" value="${esc(c.customRate)}" oninput="updateCase('${c.id}','customRate',this.value.replace(/[^0-9.]/g,''))"><span class="unit">%</span></div></div>`:""}
         </div>
       </div>
@@ -1076,11 +1100,13 @@ function handleDateSegPaste(e,el){
 function commitDateSegments(el){
   const wrap=el.closest(".dateField");
   const dEl=wrap.querySelector(".dSeg"),mEl=wrap.querySelector(".mSeg"),yEl=wrap.querySelector(".ySeg");
-  if(!dEl.value&&!mEl.value&&!yEl.value){applyDateISO(wrap,"");return}
+  if(!dEl.value&&!mEl.value&&!yEl.value){wrap.classList.remove("invalid");applyDateISO(wrap,"");return}
+  if(!dEl.value||!mEl.value||!yEl.value){wrap.classList.remove("invalid");return}
   const d=dEl.value.padStart(2,"0"),m=mEl.value.padStart(2,"0"),y=yEl.value;
-  if(d.length!==2||m.length!==2||y.length!==4)return;
+  if(d.length!==2||m.length!==2||y.length!==4){wrap.classList.remove("invalid");return}
   const iso=`${y}-${m}-${d}`;
-  if(!parseDate(iso))return;
+  if(!parseDate(iso)){wrap.classList.add("invalid");return}
+  wrap.classList.remove("invalid");
   dEl.value=d;mEl.value=m;
   applyDateISO(wrap,iso);
 }
@@ -1142,19 +1168,19 @@ function renderCalendar(){
     const cls=["day"];
     if(iso===todayIso)cls.push("today");
     if(iso===calView.sel)cls.push("sel");
-    cells+=`<div class="${cls.join(" ")}" onclick="pickCalDay('${iso}')">${day}</div>`;
+    cells+=`<button type="button" class="${cls.join(" ")}" aria-pressed="${iso===calView.sel}" aria-current="${iso===todayIso?'date':'false'}" aria-label="${iso}" onclick="pickCalDay('${iso}')">${day}</button>`;
   }
   panel.innerHTML=`
     <div class="calHead">
-      <button class="calArrow" onclick="calShiftMonth(-1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <button type="button" class="calArrow" onclick="calShiftMonth(-1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></button>
       <div class="monLbl">${monthNames[calView.m]}</div>
       <input type="text" class="yrInput" value="${calView.y}" inputmode="numeric" onchange="calSetYear(this.value)">
-      <button class="calArrow" onclick="calShiftMonth(1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 18l6-6-6-6"/></svg></button>
+      <button type="button" class="calArrow" onclick="calShiftMonth(1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 18l6-6-6-6"/></svg></button>
     </div>
     <div class="calGrid">${dow.map(d=>`<div class="dow">${d}</div>`).join("")}${cells}</div>
     <div class="calFoot">
-      <button class="btn btn-ghost btn-sm" onclick="pickCalDay('${todayIso}')">${tt.today}</button>
-      <button class="btn btn-ghost btn-sm" onclick="closeCalendar()">${tt.cancel}</button>
+      <button type="button" class="btn btn-ghost btn-sm" onclick="pickCalDay('${todayIso}')">${tt.today}</button>
+      <button type="button" class="btn btn-ghost btn-sm" onclick="closeCalendar()">${tt.cancel}</button>
     </div>`;
 }
 function calShiftMonth(delta){
@@ -1586,9 +1612,9 @@ function init(){
   document.getElementById("langBtn").addEventListener("click",()=>switchLang(state.lang==="ar"?"en":"ar"));
   document.getElementById("themeBtn").addEventListener("click",()=>switchTheme(state.theme==="light"?"dark":"light"));
   document.getElementById("settingsBtn").addEventListener("click",()=>openPanel("settingsOverlay"));
-  document.getElementById("compoundSwitch").addEventListener("click",function(){state.compounding=!state.compounding;this.classList.toggle("on",state.compounding);saveState();renderCasesList();renderCasesKpi();renderReport();});
-  document.getElementById("roundExpensesSwitch").addEventListener("click",function(){state.roundExpenses=!state.roundExpenses;this.classList.toggle("on",state.roundExpenses);saveState();renderCasesList();renderCasesKpi();renderReport();});
-  document.querySelectorAll("#roundingSeg .segBtn").forEach(b=>b.addEventListener("click",function(){state.rounding=this.dataset.val;document.querySelectorAll("#roundingSeg .segBtn").forEach(x=>x.classList.toggle("on",x===this));saveState();renderCasesList();renderCasesKpi();renderReport();}));
+  document.getElementById("compoundSwitch").addEventListener("click",function(){state.compounding=!state.compounding;this.classList.toggle("on",state.compounding);this.setAttribute("aria-checked",String(state.compounding));saveState();renderCasesList();renderCasesKpi();renderReport();});
+  document.getElementById("roundExpensesSwitch").addEventListener("click",function(){state.roundExpenses=!state.roundExpenses;this.classList.toggle("on",state.roundExpenses);this.setAttribute("aria-checked",String(state.roundExpenses));saveState();renderCasesList();renderCasesKpi();renderReport();});
+  document.querySelectorAll("#roundingSeg .segBtn").forEach(b=>b.addEventListener("click",function(){state.rounding=this.dataset.val;document.querySelectorAll("#roundingSeg .segBtn").forEach(x=>{x.classList.toggle("on",x===this);x.setAttribute("aria-pressed",String(x===this));});saveState();renderCasesList();renderCasesKpi();renderReport();}));
   document.getElementById("holidaysArea").addEventListener("change",function(){applyHolidaysArea(this.value)});
   document.getElementById("addRateYearBtn").addEventListener("click",addRateYear);
   document.getElementById("marginInput").addEventListener("input",function(){this.value=this.value.replace(/[^0-9.\-]/g,"")});
