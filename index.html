@@ -601,6 +601,19 @@ body{background:#fff;color:#111}
 </div>
 </div>
 <div class="overlay" id="calOverlay" role="dialog" aria-modal="true"><div class="calPanel glass-strong" id="calPanelInner"></div></div>
+<div class="overlay" id="exportWarnOverlay" role="dialog" aria-modal="true" aria-labelledby="exportWarnTitle">
+<div class="panel glass-strong">
+<div class="panelHead">
+<h3 id="exportWarnTitle"></h3>
+<button class="closeX" onclick="closePanel('exportWarnOverlay')" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+</div>
+<p id="exportWarnBody" style="margin:4px 0 20px;color:var(--ink);line-height:1.6"></p>
+<div style="display:flex;gap:10px;justify-content:flex-end">
+<button type="button" class="btn btn-ghost" id="exportWarnCancelBtn" onclick="closePanel('exportWarnOverlay')"></button>
+<button type="button" class="btn btn-primary" id="exportWarnProceedBtn" onclick="confirmExportAnyway()"></button>
+</div>
+</div>
+</div>
 <div class="toastHost" id="toastHost"></div>
 <script>
 const DEFAULT_RATES={2017:15.25,2018:16.25,2019:17.25,2020:12.75,2021:8.75,2022:8.75,2023:16.75,2024:19.75,2025:27.75,2026:20.5};
@@ -647,8 +660,9 @@ resetAllData:"إعادة ضبط",resetDoneOk:"تمت إعادة الضبط",
 autoSaveNote:"يُحفظ تلقائيًا على هذا الجهاز",autoSaveUnavailable:"التخزين غير متاح في هذا المتصفح",
 datesReversed:"تاريخ التسوية قبل تاريخ الاستلام",swapDates:"تبديل التاريخين",
 missingRatesReportWarn:"بعض الحالات تتضمن سنوات بلا معدل معتمد:",
-missingRatesExportWarn:"السنوات التالية بلا معدل معتمد وسيُستخدم 0% بدلاً منها. تصدير الملف رغم ذلك؟",
+missingRatesExportWarn:"السنوات التالية بلا معدل معتمد، وسيُستخدم 0% بدلاً منها:",
 missingRatesAssumptionLbl:"سنوات بلا معدل معتمد",
+exportWarnTitle:"قبل التصدير",exportAnyway:"تصدير رغم ذلك",
 rangeCollapsed:"الفترة بعد التسوية وفق قاعدة الاحتساب الحالية لا تُنتج أي شريحة عائد",
 reconcileMismatch:"تنبيه: مجموع الأنصبة لا يطابق الإجمالي الكلي",
 engineVersionLbl:"إصدار المحرك",rateTableHashLbl:"بصمة جدول المعدلات",
@@ -701,8 +715,9 @@ resetAllData:"Reset",resetDoneOk:"Reset complete",
 autoSaveNote:"Auto-saved on this device",autoSaveUnavailable:"Storage isn't available in this browser",
 datesReversed:"Settlement date is before receipt date",swapDates:"Swap dates",
 missingRatesReportWarn:"Some cases include years with no configured rate:",
-missingRatesExportWarn:"The following years have no configured rate and 0% will be used instead. Export anyway?",
+missingRatesExportWarn:"The following years have no configured rate, and 0% will be used instead:",
 missingRatesAssumptionLbl:"Years with no configured rate",
+exportWarnTitle:"Before exporting",exportAnyway:"Export anyway",
 rangeCollapsed:"This period produces no return segment under the current day-count rule",
 reconcileMismatch:"Notice: share total doesn't match the grand total",
 engineVersionLbl:"Engine version",rateTableHashLbl:"Rate table hash",
@@ -1029,6 +1044,9 @@ document.getElementById("settingsBtn").title=tt.settings;
 document.getElementById("settingsBtn").setAttribute("aria-label",tt.settings);
 document.getElementById("themeBtn").title=tt.themeToggle;
 document.getElementById("themeBtn").setAttribute("aria-label",tt.themeToggle);
+document.getElementById("exportWarnTitle").textContent=tt.exportWarnTitle;
+document.getElementById("exportWarnCancelBtn").textContent=tt.cancel;
+document.getElementById("exportWarnProceedBtn").textContent=tt.exportAnyway;
 }
 function moveTabIndicator(instant){
 const active=document.querySelector('.tabBtn[data-tab="'+state.activeTab+'"]');
@@ -2131,13 +2149,30 @@ let h=0x811c9dc5;
 for(let i=0;i<payload.length;i++){h^=payload.charCodeAt(i);h=Math.imul(h,0x01000193)}
 return (h>>>0).toString(16).padStart(8,"0");
 }
+let pendingExport=null;
 function exportExcel(){
-const tt=t();
 const results=computeAll().filter(r=>r.active);
-const listSep=state.lang==="ar"?"، ":", ";
 const missingYears=[...new Set(results.flatMap(r=>r.missingYears))].sort((a,b)=>a-b);
-if(missingYears.length&&!confirm(`${tt.missingRatesExportWarn}
-${missingYears.join(listSep)}`))return;
+if(missingYears.length){
+const tt=t();
+const listSep=state.lang==="ar"?"، ":", ";
+document.getElementById("exportWarnBody").textContent=`${tt.missingRatesExportWarn} ${missingYears.join(listSep)}`;
+pendingExport={results,missingYears};
+openPanel("exportWarnOverlay");
+return;
+}
+runExportWorkbook(results,missingYears);
+}
+function confirmExportAnyway(){
+closePanel("exportWarnOverlay");
+if(!pendingExport)return;
+const{results,missingYears}=pendingExport;
+pendingExport=null;
+runExportWorkbook(results,missingYears);
+}
+function runExportWorkbook(results,missingYears){
+const tt=t();
+const listSep=state.lang==="ar"?"، ":", ";
 const people=eligiblePeople();
 const grand=results.reduce((s,r)=>s+r.due,0);
 const shares=allocateEqual(grand,people.length);
@@ -2218,9 +2253,10 @@ toast(tt.exportedOk);
 document.addEventListener("click",e=>{
 if(e.target.id==="calOverlay")closeCalendar();
 if(e.target.id==="settingsOverlay")closePanel("settingsOverlay");
+if(e.target.id==="exportWarnOverlay")closePanel("exportWarnOverlay");
 });
 document.addEventListener("keydown",e=>{
-if(e.key==="Escape"){closeCalendar();closePanel("settingsOverlay");}
+if(e.key==="Escape"){closeCalendar();closePanel("settingsOverlay");closePanel("exportWarnOverlay");}
 });
 function init(){
 loadState();
