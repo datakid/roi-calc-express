@@ -605,11 +605,11 @@ body{background:#fff;color:#111}
 <div class="panel glass-strong">
 <div class="panelHead">
 <h3 id="exportWarnTitle"></h3>
-<button class="closeX" onclick="closePanel('exportWarnOverlay')" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+<button class="closeX" onclick="closeExportWarn()" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
 </div>
 <p id="exportWarnBody" style="margin:4px 0 20px;color:var(--ink);line-height:1.6"></p>
 <div style="display:flex;gap:10px;justify-content:flex-end">
-<button type="button" class="btn btn-ghost" id="exportWarnCancelBtn" onclick="closePanel('exportWarnOverlay')"></button>
+<button type="button" class="btn btn-ghost" id="exportWarnCancelBtn" onclick="closeExportWarn()"></button>
 <button type="button" class="btn btn-primary" id="exportWarnProceedBtn" onclick="confirmExportAnyway()"></button>
 </div>
 </div>
@@ -2163,12 +2163,17 @@ return;
 }
 runExportWorkbook(results,missingYears);
 }
-function confirmExportAnyway(){
-closePanel("exportWarnOverlay");
-if(!pendingExport)return;
-const{results,missingYears}=pendingExport;
+function closeExportWarn(){
+if(!document.getElementById("exportWarnOverlay").classList.contains("open"))return;
+document.getElementById("exportWarnOverlay").classList.remove("open");
 pendingExport=null;
-runExportWorkbook(results,missingYears);
+unlockScroll();
+}
+function confirmExportAnyway(){
+const data=pendingExport;
+pendingExport=null;
+closePanel("exportWarnOverlay");
+if(data)runExportWorkbook(data.results,data.missingYears);
 }
 function runExportWorkbook(results,missingYears){
 const tt=t();
@@ -2253,10 +2258,10 @@ toast(tt.exportedOk);
 document.addEventListener("click",e=>{
 if(e.target.id==="calOverlay")closeCalendar();
 if(e.target.id==="settingsOverlay")closePanel("settingsOverlay");
-if(e.target.id==="exportWarnOverlay")closePanel("exportWarnOverlay");
+if(e.target.id==="exportWarnOverlay")closeExportWarn();
 });
 document.addEventListener("keydown",e=>{
-if(e.key==="Escape"){closeCalendar();closePanel("settingsOverlay");closePanel("exportWarnOverlay");}
+if(e.key==="Escape"){closeCalendar();closePanel("settingsOverlay");closeExportWarn();}
 });
 function init(){
 loadState();
