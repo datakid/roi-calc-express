@@ -607,6 +607,7 @@ const DEFAULT_RATES={2017:15.25,2018:16.25,2019:17.25,2020:12.75,2021:8.75,2022:
 const DEFAULT_MARGIN=2;
 const DEFAULT_WEEKEND=[5,6];
 const ACCRUAL_MODES=["commercial15","actualActual","inclusiveMonths","nextWorkingMonth"];
+const ROI_EXPRESS_BUILD="roi_express_1_0_0";
 const I18N={
 ar:{title:"العائد السريع",casesTab:"حالات العجز",peopleTab:"الأشخاص",reportTab:"التقرير",
 casesTitle:"حالات العجز",casesHint:"أضف كل حالة عجز على حدة، والعائد يُحسب فقط عن فترة العجز",addCase:"إضافة حالة",
@@ -646,6 +647,11 @@ resetAllData:"إعادة ضبط",resetDoneOk:"تمت إعادة الضبط",
 autoSaveNote:"يُحفظ تلقائيًا على هذا الجهاز",autoSaveUnavailable:"التخزين غير متاح في هذا المتصفح",
 datesReversed:"تاريخ التسوية قبل تاريخ الاستلام",swapDates:"تبديل التاريخين",
 missingRatesReportWarn:"بعض الحالات تتضمن سنوات بلا معدل معتمد:",
+missingRatesExportWarn:"السنوات التالية بلا معدل معتمد وسيُستخدم 0% بدلاً منها. تصدير الملف رغم ذلك؟",
+missingRatesAssumptionLbl:"سنوات بلا معدل معتمد",
+rangeCollapsed:"الفترة بعد التسوية وفق قاعدة الاحتساب الحالية لا تُنتج أي شريحة عائد",
+reconcileMismatch:"تنبيه: مجموع الأنصبة لا يطابق الإجمالي الكلي",
+engineVersionLbl:"إصدار المحرك",rateTableHashLbl:"بصمة جدول المعدلات",
 pasteHint:"الأسماء الملصقة ستحل محل الأشخاص المؤقتين بالترتيب",pasteRangeApplied:"تم تعبئة التاريخين من النص الملصق",pasteHint2:"افصل بين الاسم وقيمة العجز وتاريخ الاستلام وتاريخ التسوية بفاصلة أو Tab — التاريخ اختياري",
 endOfMonthChip:"نهاية الشهر",samePrevChip:"نفس الحالة السابقة",
 duplicateCase:"نسخ الحالة",caseDuplicated:"تم نسخ الحالة",copySuffix:" (نسخة)",
@@ -695,6 +701,11 @@ resetAllData:"Reset",resetDoneOk:"Reset complete",
 autoSaveNote:"Auto-saved on this device",autoSaveUnavailable:"Storage isn't available in this browser",
 datesReversed:"Settlement date is before receipt date",swapDates:"Swap dates",
 missingRatesReportWarn:"Some cases include years with no configured rate:",
+missingRatesExportWarn:"The following years have no configured rate and 0% will be used instead. Export anyway?",
+missingRatesAssumptionLbl:"Years with no configured rate",
+rangeCollapsed:"This period produces no return segment under the current day-count rule",
+reconcileMismatch:"Notice: share total doesn't match the grand total",
+engineVersionLbl:"Engine version",rateTableHashLbl:"Rate table hash",
 pasteHint:"Pasted names will replace the placeholder people, in order",pasteRangeApplied:"Both dates filled from the pasted text",pasteHint2:"Separate name, shortage amount, receipt date, and settlement date with a comma or Tab — dates are optional",
 endOfMonthChip:"End of month",samePrevChip:"Same as previous case",
 duplicateCase:"Duplicate case",caseDuplicated:"Case duplicated",copySuffix:" (copy)",
@@ -724,7 +735,7 @@ const s=JSON.parse(localStorage.getItem(LS_KEY)||"null");
 if(!s||typeof s!=="object")return;
 state=Object.assign({},state,s);
 state.rates=Object.assign({},DEFAULT_RATES,s.rates||{});
-state.weekend=Array.isArray(s.weekend)&&s.weekend.length<7?s.weekend:[...DEFAULT_WEEKEND];
+state.weekend=Array.isArray(s.weekend)&&s.weekend.length<7&&s.weekend.every(d=>Number.isInteger(d)&&d>=0&&d<=6)?s.weekend:[...DEFAULT_WEEKEND];
 state.holidays=Array.isArray(s.holidays)?s.holidays.filter(h=>parseDate(h)):[];
 if(!ACCRUAL_MODES.includes(state.accrual))state.accrual="commercial15";
 if(!["final","perYear","none"].includes(state.rounding))state.rounding="final";
@@ -877,9 +888,11 @@ const datesReversed=!!(start&&end&&start>end);
 const segments=[];
 const missingYears=[];
 let rawReturn=0;
+let rangeCollapsed=false;
 const active=shortage>0&&(c.includeShortage||c.includeExpenses||(c.investEnabled&&principal>0));
 if(active&&c.investEnabled&&principal>0&&hasValidDates){
 const segs=generateSegments(start,end);
+rangeCollapsed=segs.length===0;
 let running=principal;
 segs.forEach(seg=>{
 let rate;
@@ -905,7 +918,7 @@ else returnTotal=rawReturn;
 const due=active?base+returnTotal:0;
 return{
 id:c.id,name:c.name,shortage,expenseRate,expenseValue,base,principal,includeExpenses:c.includeExpenses,
-returnTotal,due,segments,missingYears,active,hasValidDates,datesReversed,
+returnTotal,due,segments,missingYears,active,hasValidDates,datesReversed,rangeCollapsed,
 start:c.start,end:c.end,needsDates:c.investEnabled&&principal>0&&!hasValidDates
 };
 }
@@ -1239,7 +1252,7 @@ function caseCardHTML(c,idx){
 const tt=t();
 const r=computeCase(c);
 const missingLine=r.missingYears.length?`<div class="warnLine"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>${tt.missingRate} ${r.missingYears.join("، ")}</div>`:"";
-const dateErr=r.datesReversed?`<div class="errLine"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>${tt.datesReversed}</div>`:r.needsDates?`<div class="errLine"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>${tt.invalidDates}</div>`:"";
+const dateErr=r.datesReversed?`<div class="errLine"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>${tt.datesReversed}</div>`:r.rangeCollapsed?`<div class="errLine"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>${tt.rangeCollapsed}</div>`:r.needsDates?`<div class="errLine"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>${tt.invalidDates}</div>`:"";
 return `
 <div class="caseCard glass" data-id="${c.id}">
 <div class="cardTop">
@@ -1527,7 +1540,7 @@ if(dueEl)dueEl.innerHTML=`${tt.due}: ${moneyHTML(r.due)}`;
 const flagsEl=card.querySelector(".cardFlags");
 if(flagsEl){
 const missingLine=r.missingYears.length?`<div class="warnLine"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>${tt.missingRate} ${r.missingYears.join("، ")}</div>`:"";
-const dateErr=r.datesReversed?`<div class="errLine"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>${tt.datesReversed}</div>`:r.needsDates?`<div class="errLine"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>${tt.invalidDates}</div>`:"";
+const dateErr=r.datesReversed?`<div class="errLine"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>${tt.datesReversed}</div>`:r.rangeCollapsed?`<div class="errLine"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>${tt.rangeCollapsed}</div>`:r.needsDates?`<div class="errLine"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>${tt.invalidDates}</div>`:"";
 flagsEl.innerHTML=missingLine+dateErr;
 }
 const dateRowEl=card.querySelector(".dateRow");
@@ -1838,13 +1851,15 @@ function shareGridHTML(people,shares,grand){
 if(!people.length)return "";
 const evenShare=people.length?grand/people.length:0;
 const uneven=shares.some(s=>Math.abs(s-evenShare)>0.005);
+const sumShares=shares.reduce((s,x)=>s+x,0);
+const mismatch=Math.abs(sumShares-grand)>0.005;
 const cards=people.map((p,i)=>`
 <div class="shareCard" style="animation-delay:${Math.min(i,14)*30}ms">
 <div class="avatarCircle">${esc(initials(p.name))}</div>
 <div class="sname">${esc(p.name)}</div>
 <div class="sval">${moneyHTML(shares[i]||0)}</div>
 </div>`).join("");
-return `<div class="shareGrid">${cards}</div>${uneven?`<div class="remainderFoot">${esc(t().remainderNote)}</div>`:""}`;
+return `<div class="shareGrid">${cards}</div>${uneven?`<div class="remainderFoot">${esc(t().remainderNote)}</div>`:""}${mismatch?`<div class="remainderFoot" style="color:var(--danger)">${esc(t().reconcileMismatch)} (Σ ${moneyHTML(sumShares)} − ${moneyHTML(grand)})</div>`:""}`;
 }
 function copyPeopleShareList(){
 const people=eligiblePeople();
@@ -2109,9 +2124,20 @@ n++;
 used.add(name);
 return name;
 }
+function rateTableHash(){
+const years=Object.keys(state.rates).map(Number).sort((a,b)=>a-b);
+const payload=JSON.stringify({r:years.map(y=>[y,numberValue(state.rates[y])]),m:numberValue(state.rateMargin)});
+let h=0x811c9dc5;
+for(let i=0;i<payload.length;i++){h^=payload.charCodeAt(i);h=Math.imul(h,0x01000193)}
+return (h>>>0).toString(16).padStart(8,"0");
+}
 function exportExcel(){
 const tt=t();
 const results=computeAll().filter(r=>r.active);
+const listSep=state.lang==="ar"?"، ":", ";
+const missingYears=[...new Set(results.flatMap(r=>r.missingYears))].sort((a,b)=>a-b);
+if(missingYears.length&&!confirm(`${tt.missingRatesExportWarn}
+${missingYears.join(listSep)}`))return;
 const people=eligiblePeople();
 const grand=results.reduce((s,r)=>s+r.due,0);
 const shares=allocateEqual(grand,people.length);
@@ -2166,6 +2192,9 @@ const sep=state.lang==="ar"?"، ":", ";
 const names=(state.weekend||[]).slice().sort((a,b)=>a-b).map(d=>tt.dayNames[d]).join(sep);
 if(names)assumeAOA.push([tt.weekendSection,names]);
 }
+assumeAOA.push([tt.engineVersionLbl,ROI_EXPRESS_BUILD]);
+assumeAOA.push([tt.rateTableHashLbl,rateTableHash()]);
+if(missingYears.length)assumeAOA.push([tt.missingRatesAssumptionLbl,missingYears.join(listSep)]);
 assumeAOA.push([]);
 const rateHeaderRow=assumeAOA.length;
 assumeAOA.push([tt.yearCol,tt.rateCol]);
