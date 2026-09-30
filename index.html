@@ -88,11 +88,15 @@ overflow-x:hidden;
 }
 body[data-lang="en"]{font-family:"Inter","Tajawal",-apple-system,sans-serif}
 .orbfield{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
-.orb{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5;transition:opacity .4s}
+.orb{position:absolute;border-radius:50%;opacity:.55;will-change:transform;transform:translateZ(0)}
 .orb1{width:52vw;height:52vw;top:-18vw;inset-inline-end:-14vw;background:radial-gradient(circle,rgba(var(--bg-orb-a),.5),transparent 70%);animation:drift1 26s ease-in-out infinite}
 .orb2{width:44vw;height:44vw;bottom:-16vw;inset-inline-start:-12vw;background:radial-gradient(circle,rgba(var(--bg-orb-b),.4),transparent 70%);animation:drift2 32s ease-in-out infinite}
-@keyframes drift1{0%,100%{transform:translate(0,0)}50%{transform:translate(-3%,4%)}}
-@keyframes drift2{0%,100%{transform:translate(0,0)}50%{transform:translate(4%,-3%)}}
+@keyframes drift1{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(-3%,4%,0)}}
+@keyframes drift2{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(4%,-3%,0)}}
+.caseCard.glass,.kpi.glass,.personRow.glass,.reportCard.glass,.emptyState.glass{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--glass-strong);box-shadow:var(--shadow-sm)}
+.caseCard,.reportCard{contain:layout paint}
+input,textarea,button{font-family:inherit}
+.enter{animation:fadeUp .42s var(--ease) backwards}
 .wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:22px 18px 80px}
 .glass{
 background:var(--glass);
@@ -126,7 +130,8 @@ nav.tabs{display:flex;gap:2px;padding:6px;margin-bottom:22px;position:sticky;top
 .section.active{display:block}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .kpiRow{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:18px}
-.kpi{padding:16px 18px 16px 22px;border-radius:var(--r-md);transition:transform .3s var(--ease),box-shadow .3s var(--ease);position:relative;overflow:hidden;animation:fadeUp .45s var(--ease) backwards}
+.kpi{padding:16px 18px 16px 22px;border-radius:var(--r-md);transition:transform .3s var(--ease),box-shadow .3s var(--ease);position:relative;overflow:hidden}
+.kpi .sub{font-size:11px;color:var(--muted);margin-top:2px;font-weight:600}
 [dir=rtl] .kpi{padding:16px 22px 16px 18px}
 .kpi::before{content:"";position:absolute;inset-inline-start:0;top:10px;bottom:10px;width:3px;border-radius:3px;background:var(--faint);opacity:.6}
 .kpi.k-base::before{background:var(--accent-2)}
@@ -158,8 +163,12 @@ body[data-lang="ar"] .sectionHead h2{font-family:"Tajawal",sans-serif;font-weigh
 .btn-sm{padding:7px 13px;font-size:12px}
 .btn-danger-ghost{background:transparent;color:var(--danger);border:1px solid var(--danger-soft)}
 .btn-danger-ghost:hover{background:var(--danger-soft)}
-.caseCard{padding:20px 22px;border-radius:var(--r-lg);margin-bottom:16px;transition:box-shadow .35s var(--ease),transform .35s var(--ease);animation:fadeUp .5s var(--ease) backwards}
-.caseCard:hover{box-shadow:var(--shadow-lg)}
+.caseCard{padding:20px 22px;border-radius:var(--r-lg);margin-bottom:16px;transition:box-shadow .35s var(--ease)}
+.caseCard:hover{box-shadow:var(--shadow-md)}
+.caseCard.inactive{opacity:.72}
+.caseNo{width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.caseMeta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:11.5px;color:var(--muted);margin-top:-4px;margin-bottom:12px}
+.caseMeta b{color:var(--ink);font-weight:700}
 .caseCard .cardTop{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
 .cardTopActions{display:flex;align-items:center;gap:6px;flex-shrink:0}
 .miniIconBtn{width:32px;height:32px;border-radius:var(--r-pill);border:1px solid var(--line);background:rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);transition:all .22s var(--ease);flex-shrink:0}
@@ -218,7 +227,7 @@ body[data-lang="ar"] .caseNameInput{font-family:"Tajawal",sans-serif;font-weight
 .advBody{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);display:none}
 .advBody.open{display:block}
 .growthTrack{display:flex;align-items:flex-end;gap:3px;height:30px;margin:14px 0}
-.growthTrack .gbar{flex:1;background:var(--accent-soft);border-radius:4px 4px 0 0;min-height:3px;position:relative;transition:background .3s var(--ease);transform-origin:bottom;animation:growIn .5s var(--ease) backwards}
+.growthTrack .gbar{flex:1;background:var(--accent-soft);border-radius:4px 4px 0 0;min-height:3px;position:relative;transition:height .3s var(--ease),background .3s var(--ease);transform-origin:bottom}
 @keyframes growIn{from{transform:scaleY(0)}to{transform:scaleY(1)}}
 .growthTrack .gbar.pos{background:linear-gradient(180deg,var(--accent),var(--accent-2))}
 .growthTrack .gbar .yr{position:absolute;bottom:-16px;inset-inline-start:50%;transform:translateX(-50%);font-size:9px;color:var(--faint);font-weight:700}
@@ -236,7 +245,11 @@ body[data-lang="ar"] .dueChip{font-family:"Tajawal",sans-serif;font-weight:800}
 .selectAllWrap{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted);cursor:pointer}
 .personCheck,.selectAllWrap input{width:15px;height:15px;accent-color:var(--accent);cursor:pointer;flex-shrink:0}
 .peopleGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:16px}
-.personRow{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:var(--r-md);animation:fadeUp .4s var(--ease) backwards}
+.personRow{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:var(--r-md)}
+.personRow.dupe{outline:1px dashed var(--warning)}
+.searchInput{flex:1 1 160px;min-width:0;max-width:260px;background:rgba(255,255,255,.5);border:1px solid var(--line);border-radius:var(--r-pill);padding:7px 14px;font-size:12.5px;color:var(--ink);outline:none}
+[data-theme="dark"] .searchInput{background:rgba(255,255,255,.04)}
+.searchInput:focus{border-color:var(--accent)}
 .personRow .idx{width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:11.5px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .personRow input{flex:1;min-width:0;border:none;background:transparent;font-size:13.5px;font-weight:600;color:var(--ink);outline:none;font-family:inherit}
 .personRow .rm{border:none;background:transparent;color:var(--faint);cursor:pointer;display:flex;padding:3px;border-radius:6px}
@@ -323,7 +336,7 @@ body[data-lang="ar"] .reportHeadBand h2{font-family:"Tajawal",sans-serif;font-we
 .miniYearGrid{display:flex}
 }
 .shareGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
-.shareCard{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:16px 10px;border-radius:var(--r-md);background:rgba(255,255,255,.28);animation:fadeUp .4s var(--ease) backwards}
+.shareCard{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:16px 10px;border-radius:var(--r-md);background:rgba(255,255,255,.28)}
 [data-theme="dark"] .shareCard{background:rgba(255,255,255,.035)}
 .avatarCircle{width:42px;height:42px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;font-family:"Fraunces",serif}
 .shareCard .sname{font-size:12px;font-weight:700;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
@@ -410,7 +423,23 @@ body[data-lang="ar"] .eyebrow{letter-spacing:.3px}
 .autosaveNote svg{width:12px;height:12px;flex-shrink:0}
 .toastHost{position:fixed;bottom:20px;inset-inline-start:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;align-items:center}
 [dir=rtl] .toastHost{transform:translateX(50%)}
-.toast{padding:10px 18px;border-radius:var(--r-pill);font-size:12.5px;font-weight:700;box-shadow:var(--shadow-md);animation:toastIn .3s var(--ease)}
+.toast{padding:10px 18px;border-radius:var(--r-pill);font-size:12.5px;font-weight:700;box-shadow:var(--shadow-md);animation:toastIn .3s var(--ease);display:flex;align-items:center;gap:12px;transition:opacity .3s}
+.toast .toastAct{border:none;background:var(--accent-soft);color:var(--accent);font-weight:800;font-size:12px;border-radius:var(--r-pill);padding:4px 12px;cursor:pointer}
+.statGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:18px}
+.stat{padding:12px 14px;border-radius:var(--r-md);background:rgba(255,255,255,.3);border:1px solid var(--line)}
+[data-theme="dark"] .stat{background:rgba(255,255,255,.035)}
+.stat .sl{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px}
+.stat .sv{font-size:15px;font-weight:800;color:var(--ink)}
+.stat .ss{font-size:10.5px;color:var(--muted);margin-top:2px}
+.sumTable td.num,.sumTable th.num{text-align:end}
+.sumTable tfoot td{font-weight:800;border-top:2px solid var(--accent);border-bottom:none}
+.sumTable .pctBar{display:inline-block;height:6px;border-radius:3px;background:var(--accent);opacity:.55;vertical-align:middle;margin-inline-end:6px}
+.flagDot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--warning);margin-inline-start:6px;vertical-align:middle}
+.ledgerTools{display:flex;gap:6px}
+.rateRow .rmYr{border:none;background:transparent;color:var(--faint);cursor:pointer;padding:2px;display:flex;border-radius:6px}
+.rateRow .rmYr:hover{color:var(--danger);background:var(--danger-soft)}
+.rateRow .rmYr svg{width:12px;height:12px}
+.rateRow.missing{border-color:var(--warning)}
 @keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:640px){
 .dateRow{grid-template-columns:1fr}
@@ -423,7 +452,8 @@ header.top{padding:14px}
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-thumb{background:var(--faint);border-radius:8px}
 @media print{
-.orbfield,.topActions,nav.tabs,.fab,.toastHost,.overlay,.mark,.reportActions,.ledgerRow .lchev{display:none!important}
+.orbfield,.topActions,nav.tabs,.fab,.toastHost,.overlay,.mark,.reportActions,.ledgerTools,.ledgerRow .lchev,.reportCard .btn{display:none!important}
+.sumTable,.statGrid,.stat{break-inside:avoid}
 body{background:#fff;color:#111}
 .section{display:none!important}
 #sec-report{display:block!important}
@@ -512,6 +542,7 @@ body{background:#fff;color:#111}
 <label class="selectAllWrap">
 <input type="checkbox" id="selectAllPeople"><span id="selectAllLbl">تحديد الكل</span>
 </label>
+<input type="search" class="searchInput" id="peopleSearch" autocomplete="off">
 <div style="display:flex;gap:8px">
 <button class="btn btn-ghost btn-sm" id="removeSelectedBtn" style="display:none"></button>
 <button class="btn btn-ghost btn-sm" id="clearAllBtn"></button>
@@ -589,6 +620,14 @@ body{background:#fff;color:#111}
 <div class="settingRow">
 <div><div class="lbl2" id="lblCurrency">عملة العرض</div><div class="sub" id="subCurrency">تظهر بجانب الأرقام في التقرير فقط</div></div>
 <input type="text" id="currencyInput" maxlength="6" style="width:64px;text-align:center;background:rgba(255,255,255,.5);border:1px solid var(--line);border-radius:8px;padding:7px 4px;font-size:13px;font-weight:700;color:var(--ink);font-family:inherit">
+</div>
+<div class="settingRow">
+<div><div class="lbl2" id="lblBackup"></div><div class="sub" id="subBackup"></div></div>
+<div style="display:flex;gap:6px;flex-shrink:0">
+<button type="button" class="btn btn-ghost btn-sm" id="backupExportBtn"></button>
+<button type="button" class="btn btn-ghost btn-sm" id="backupImportBtn"></button>
+<input type="file" id="backupFileInput" accept=".json,application/json" style="display:none">
+</div>
 </div>
 <div class="settingRow" style="border-bottom:none">
 <div><div class="lbl2" id="lblReset">إعادة الضبط الكامل</div><div class="sub" id="subReset">حذف جميع الحالات والأشخاص والإعدادات المحفوظة</div></div>
@@ -676,6 +715,14 @@ yearlyReturnTitle:"العائد حسب السنة",copyList:"نسخ القائم
 remainderNote:"وُزِّعت فروق التقريب على أوائل القائمة",assumptionsTitle:"الافتراضات المستخدمة",
 totalBase:"إجمالي الأساس",onLbl:"مفعّل",offLbl:"غير مفعّل",settingCol:"الإعداد",valueCol:"القيمة",
 effectivePeriod:"الفترة المعتمدة في الاحتساب",pasteCasesInvalid:"تعذّر التعرف على أي حالة صالحة في النص الملصق",
+undo:"تراجع",caseRemoved:"تم حذف الحالة",expenseValue:"قيمة المصاريف",principalLbl:"وعاء الاستثمار",effShort:"فترة الاحتساب",
+casesCount:"عدد الحالات",avgRate:"متوسط العائد السنوي الفعلي",dateSpan:"النطاق الزمني",effectiveYield:"العائد إلى الوعاء",avgDuration:"متوسط مدة العجز",
+summaryTitle:"ملخص الحالات",sharePct:"النسبة",receipt:"الاستلام",settlement:"التسوية",effFrom:"بداية الاحتساب",effTo:"نهاية الاحتساب",monthsCol:"الأشهر",
+expandAll:"فتح الكل",collapseAll:"طي الكل",summarySheet:"الملخص",byYearSheet:"العائد حسب السنة",casesSheet:"الحالات",appliedRate:"المعدل المطبّق",baseRate:"معدل البنك",
+narrativeFull:"يشمل التقرير {cases} حالة عجز بإجمالي أساس {base}، وقد أنتجت عائدًا قدره {ret} خلال الفترة من {from} إلى {to}، ليصبح الإجمالي المستحق {grand}.",narrativeSplit:" يُوزَّع على {n} شخص بنصيب {share} للفرد.",
+rateSourceCustom:"مخصص",rateSourceTable:"الجدول",rateSource:"مصدر المعدل",inactiveNote:"حالات غير مكتملة لم تدخل الإجمالي",removeYear:"حذف السنة",
+backupExport:"نسخة احتياطية",backupImport:"استعادة",backupLbl:"النسخ الاحتياطي",backupSub:"حفظ كل البيانات والإعدادات في ملف JSON واستعادتها لاحقًا",backupOk:"تمت الاستعادة",backupFail:"ملف غير صالح",
+dupeNames:"أسماء مكررة",ofTotal:"من الإجمالي",perCaseAvg:"متوسط المستحق للحالة",reportTitleFull:"تقرير احتساب العائد",
 dayNames:["أحد","اثنين","ثلاثاء","أربعاء","خميس","جمعة","سبت"]},
 en:{title:"ROI Express",casesTab:"Shortage Cases",peopleTab:"People",reportTab:"Report",
 casesTitle:"Shortage Cases",casesHint:"Add each shortage case separately — return is calculated only for the shortage period",addCase:"Add case",
@@ -731,6 +778,14 @@ yearlyReturnTitle:"Return by year",copyList:"Copy list",listCopied:"Copied",
 remainderNote:"Rounding remainder distributed to the first entries",assumptionsTitle:"Assumptions used",
 totalBase:"Total base",onLbl:"On",offLbl:"Off",settingCol:"Setting",valueCol:"Value",
 effectivePeriod:"Period used in the calculation",pasteCasesInvalid:"Couldn't recognize any valid case in the pasted text",
+undo:"Undo",caseRemoved:"Case removed",expenseValue:"Expense value",principalLbl:"Investment principal",effShort:"Accrual period",
+casesCount:"Cases",avgRate:"Effective annual yield",dateSpan:"Date span",effectiveYield:"Return on principal",avgDuration:"Avg. shortage duration",
+summaryTitle:"Case summary",sharePct:"% of total",receipt:"Receipt",settlement:"Settlement",effFrom:"Accrual from",effTo:"Accrual to",monthsCol:"Months",
+expandAll:"Expand all",collapseAll:"Collapse all",summarySheet:"Summary",byYearSheet:"Return by year",casesSheet:"Cases",appliedRate:"Applied rate",baseRate:"Bank rate",
+narrativeFull:"This report covers {cases} shortage case(s) with a total base of {base}, generating a return of {ret} between {from} and {to}, for a grand total due of {grand}.",narrativeSplit:" Split across {n} people at {share} each.",
+rateSourceCustom:"Custom",rateSourceTable:"Table",rateSource:"Rate source",inactiveNote:"Incomplete cases excluded from the total",removeYear:"Remove year",
+backupExport:"Backup",backupImport:"Restore",backupLbl:"Backup",backupSub:"Save all data and settings to a JSON file and restore later",backupOk:"Restored",backupFail:"Invalid file",
+dupeNames:"Duplicate names",ofTotal:"of total",perCaseAvg:"Avg. due per case",reportTitleFull:"Return Calculation Report",
 dayNames:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]}
 };
 let state={
@@ -744,12 +799,16 @@ function newCase(){return{id:uid(),name:"",shortage:"",expenseRate:"",includeSho
 function newPerson(name){return{id:uid(),name:name||""}}
 const LS_KEY="roiX.v1";
 const LS_AVAILABLE=(()=>{try{const k="__t"+Date.now();localStorage.setItem(k,"1");localStorage.removeItem(k);return true}catch(e){return false}})();
-function saveState(){try{localStorage.setItem(LS_KEY,JSON.stringify(state))}catch(e){}}
-function loadState(){try{
-const s=JSON.parse(localStorage.getItem(LS_KEY)||"null");
+let saveTimer=0;
+function saveNow(){clearTimeout(saveTimer);saveTimer=0;try{localStorage.setItem(LS_KEY,JSON.stringify(state))}catch(e){}}
+function saveState(){clearTimeout(saveTimer);saveTimer=setTimeout(saveNow,250)}
+window.addEventListener("pagehide",()=>{if(saveTimer)saveNow()});
+document.addEventListener("visibilitychange",()=>{if(document.hidden&&saveTimer)saveNow()});
+function loadState(src){try{
+const s=src||JSON.parse(localStorage.getItem(LS_KEY)||"null");
 if(!s||typeof s!=="object")return;
 state=Object.assign({},state,s);
-state.rates=Object.assign({},DEFAULT_RATES,s.rates||{});
+state.rates=s.rates&&typeof s.rates==="object"&&Object.keys(s.rates).length?Object.assign({},s.rates):{...DEFAULT_RATES};
 state.weekend=Array.isArray(s.weekend)&&s.weekend.length<7&&s.weekend.every(d=>Number.isInteger(d)&&d>=0&&d<=6)?s.weekend:[...DEFAULT_WEEKEND];
 state.holidays=Array.isArray(s.holidays)?s.holidays.filter(h=>parseDate(h)):[];
 if(!ACCRUAL_MODES.includes(state.accrual))state.accrual="commercial15";
@@ -760,6 +819,7 @@ const nums=[...state.cases,...state.people].map(x=>{const m=/^id(\d+)_/.exec(x.i
 uidCounter=Math.max(uidCounter,...nums,1);
 }catch(e){}}
 function resetAllData(){
+clearTimeout(saveTimer);saveTimer=0;
 try{localStorage.removeItem(LS_KEY)}catch(e){}
 const lang=state.lang,theme=state.theme;
 state={lang,theme,rounding:"final",compounding:true,roundExpenses:false,accrual:"commercial15",placeholderName:"",
@@ -923,7 +983,7 @@ rawReturn+=raw;
 if(state.compounding)running+=raw;
 const segReturn=state.rounding==="perYear"?roundUnit(raw):raw;
 if(state.compounding&&state.rounding==="perYear")running+=segReturn-raw;
-segments.push({year:seg.year,from:seg.from,to:seg.to,days:seg.days,factor:seg.factor,rate,openingBalance,returnValue:segReturn,closingBalance:running});
+segments.push({year:seg.year,from:seg.from,to:seg.to,days:seg.days,factor:seg.factor,rate,baseRate:c.customRateEnabled?numberValue(c.customRate):(state.rates[seg.year]===undefined||state.rates[seg.year]===""?null:numberValue(state.rates[seg.year])),openingBalance,returnValue:segReturn,closingBalance:running});
 });
 }
 let returnTotal;
@@ -932,7 +992,9 @@ else if(state.rounding==="final")returnTotal=roundUnit(rawReturn);
 else returnTotal=rawReturn;
 const due=active?base+returnTotal:0;
 return{
-id:c.id,name:c.name,shortage,expenseRate,expenseValue,base,principal,includeExpenses:c.includeExpenses,
+id:c.id,name:c.name,shortage,expenseRate,expenseValue,base,principal,includeExpenses:c.includeExpenses,includeShortage:c.includeShortage,customRate:!!c.customRateEnabled,
+effFrom:segments.length?segments[0].from:null,effTo:segments.length?segments[segments.length-1].to:null,
+totalDays:segments.reduce((s,x)=>s+x.days,0),totalFactor:segments.reduce((s,x)=>s+x.factor,0),
 returnTotal,due,segments,missingYears,active,hasValidDates,datesReversed,rangeCollapsed,
 start:c.start,end:c.end,needsDates:c.investEnabled&&principal>0&&!hasValidDates
 };
@@ -1023,6 +1085,11 @@ document.getElementById("lblCurrency").textContent=tt.currencyLbl;
 document.getElementById("subCurrency").textContent=tt.currencySub;
 const currencyInput=document.getElementById("currencyInput");
 if(document.activeElement!==currencyInput)currencyInput.value=state.currency||"EGP";
+document.getElementById("lblBackup").textContent=tt.backupLbl;
+document.getElementById("subBackup").textContent=tt.backupSub;
+document.getElementById("backupExportBtn").textContent=tt.backupExport;
+document.getElementById("backupImportBtn").textContent=tt.backupImport;
+document.getElementById("peopleSearch").placeholder=state.lang==="ar"?"بحث…":"Search…";
 document.getElementById("lblReset").textContent=tt.resetSectionTitle;
 document.getElementById("subReset").textContent=tt.resetSectionSub;
 const resetBtn=document.getElementById("resetAllBtn");
@@ -1226,6 +1293,15 @@ ${swapBtn}
 </div>`;
 }
 function caseIndex(id){return state.cases.findIndex(x=>x.id===id)}
+function caseMetaHTML(r){
+const tt=t();
+const parts=[];
+if(r.expenseValue)parts.push(`${esc(tt.expenseValue)} <b>${moneyHTML(r.expenseValue)}</b>`);
+if(r.principal&&r.segments.length)parts.push(`${esc(tt.principalLbl)} <b>${moneyHTML(r.principal)}</b>`);
+if(r.effFrom)parts.push(`${esc(tt.effShort)} <b class="money">${isoOf(r.effFrom)} → ${isoOf(r.effTo)}</b>`);
+if(r.returnTotal)parts.push(`${esc(tt.ret)} <b>${moneyHTML(r.returnTotal)}</b>`);
+return `<div class="caseMeta">${parts.map(p=>`<span>${p}</span>`).join("")}</div>`;
+}
 function swapCaseDates(id){
 const c=state.cases.find(x=>x.id===id);
 if(!c)return;
@@ -1272,8 +1348,9 @@ const r=computeCase(c);
 const missingLine=r.missingYears.length?`<div class="warnLine"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>${tt.missingRate} ${r.missingYears.join("، ")}</div>`:"";
 const dateErr=r.datesReversed?`<div class="errLine"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>${tt.datesReversed}</div>`:r.rangeCollapsed?`<div class="errLine"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>${tt.rangeCollapsed}</div>`:r.needsDates?`<div class="errLine"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>${tt.invalidDates}</div>`:"";
 return `
-<div class="caseCard glass" data-id="${c.id}">
+<div class="caseCard glass${r.active?'':' inactive'}" data-id="${c.id}">
 <div class="cardTop">
+<span class="caseNo">${idx+1}</span>
 <input class="caseNameInput" placeholder="${tt.namePh}" value="${esc(c.name)}" oninput="updateCase('${c.id}','name',this.value)">
 <div class="cardTopActions">
 <button class="miniIconBtn" title="${esc(tt.duplicateCase)}" aria-label="${esc(tt.duplicateCase)}" onclick="duplicateCase('${c.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
@@ -1303,6 +1380,7 @@ ${c.investEnabled?`
 <div class="field"><label>${tt.end}</label>${dateFieldHTML(c.end,c.id,'end')}</div>
 </div>
 ${dateChipsRowHTML(c,idx)}
+${caseMetaHTML(r)}
 ${growthTrackHTML(r.segments)}
 <div class="detailsAdv">
 <button type="button" class="advToggle" aria-expanded="${c.advOpen}" onclick="toggleAdv('${c.id}')">
@@ -1537,8 +1615,17 @@ const c=state.cases.find(x=>x.id===id);
 if(!c)return;
 c[key]=value;
 saveState();
-refreshCaseComputed(id);
+scheduleComputed(id);
+}
+const pendingCards=new Set();let computedRaf=0;
+function scheduleComputed(id){
+pendingCards.add(id);
+if(computedRaf)return;
+computedRaf=requestAnimationFrame(()=>{
+computedRaf=0;
+pendingCards.forEach(refreshCaseComputed);pendingCards.clear();
 renderCasesKpi();renderReport();
+});
 }
 function updateCaseFull(id,key,value){
 const c=state.cases.find(x=>x.id===id);
@@ -1555,6 +1642,9 @@ if(!card||!c)return;
 const r=computeCase(c);
 const dueEl=card.querySelector(".dueChip");
 if(dueEl)dueEl.innerHTML=`${tt.due}: ${moneyHTML(r.due)}`;
+card.classList.toggle("inactive",!r.active);
+const metaEl=card.querySelector(".caseMeta");
+if(metaEl){const h=caseMetaHTML(r);if(metaEl.outerHTML!==h)metaEl.outerHTML=h;}
 const flagsEl=card.querySelector(".cardFlags");
 if(flagsEl){
 const missingLine=r.missingYears.length?`<div class="warnLine"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>${tt.missingRate} ${r.missingYears.join("، ")}</div>`:"";
@@ -1606,24 +1696,42 @@ c.advOpen=!c.advOpen;
 refreshSingleCard(id);
 }
 function removeCase(id){
-state.cases=state.cases.filter(c=>c.id!==id);
+const idx=caseIndex(id);
+if(idx===-1)return;
+const removed=state.cases[idx];
+state.cases.splice(idx,1);
 saveState();renderCasesList();renderCasesKpi();renderReport();
+toast(t().caseRemoved,{label:t().undo,fn:()=>{state.cases.splice(Math.min(idx,state.cases.length),0,removed);saveState();renderCasesList();renderCasesKpi();renderReport();}});
 }
 function addCase(){
-state.cases.push(newCase());
+const c=newCase();
+const last=state.cases[state.cases.length-1];
+if(last){c.expenseRate=last.expenseRate;c.includeExpenses=last.includeExpenses;c.investOn=last.investOn;c.investEnabled=last.investEnabled;c.includeShortage=last.includeShortage;}
+state.cases.push(c);
 saveState();renderCasesList();renderCasesKpi();renderReport();
+requestAnimationFrame(()=>{
+const card=document.querySelector(`.caseCard[data-id="${c.id}"]`);
+if(!card)return;
+card.classList.add("enter");
+card.scrollIntoView({behavior:prefersReducedMotion()?"auto":"smooth",block:"center"});
+const inp=card.querySelector(".caseNameInput");
+if(inp)inp.focus({preventScroll:true});
+});
 }
 function renderPeopleList(){
 const tt=t();
 const grid=document.getElementById("peopleGrid");
 const empty=document.getElementById("peopleEmpty");
 empty.style.display=state.people.length?"none":"block";
-grid.innerHTML=state.people.map((p,i)=>`
-<div class="personRow glass">
+const counts={};
+state.people.forEach(p=>{const k=p.name.trim().toLowerCase();if(k)counts[k]=(counts[k]||0)+1});
+const q=(document.getElementById("peopleSearch").value||"").trim().toLowerCase();
+grid.innerHTML=state.people.map((p,i)=>q&&!p.name.toLowerCase().includes(q)?"":`
+<div class="personRow glass${counts[p.name.trim().toLowerCase()]>1?" dupe":""}" title="${counts[p.name.trim().toLowerCase()]>1?esc(tt.dupeNames):""}">
 <input type="checkbox" class="personCheck" data-id="${p.id}" ${selectedPeopleIds.has(p.id)?"checked":""}>
 <div class="idx">${i+1}</div>
 <input value="${esc(p.name)}" placeholder="${tt.personPh}" oninput="updatePerson('${p.id}',this.value)">
-<button class="rm" onclick="removePerson('${p.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+<button class="rm" aria-label="${esc(tt.remove)}" onclick="removePerson('${p.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
 </div>`).join("");
 syncPeopleToolbar();
 }
@@ -1633,9 +1741,39 @@ if(!p)return;
 p.name=val;saveState();renderReport();
 }
 function removePerson(id){
-state.people=state.people.filter(p=>p.id!==id);
+const idx=state.people.findIndex(p=>p.id===id);
+if(idx===-1)return;
+const removed=state.people[idx];
+state.people.splice(idx,1);
 selectedPeopleIds.delete(id);
 saveState();renderPeopleList();renderReport();
+toast(t().removedSelectedOk,{label:t().undo,fn:()=>{state.people.splice(Math.min(idx,state.people.length),0,removed);saveState();renderPeopleList();renderReport();}});
+}
+function exportBackup(){
+saveNow();
+const blob=new Blob([JSON.stringify({app:ROI_EXPRESS_BUILD,savedAt:new Date().toISOString(),state},null,1)],{type:"application/json"});
+const a=document.createElement("a");
+a.href=URL.createObjectURL(blob);
+a.download="roi_express_backup_"+isoOf(new Date())+".json";
+document.body.appendChild(a);a.click();a.remove();
+setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+function importBackup(file){
+const reader=new FileReader();
+reader.onload=e=>{
+try{
+const data=JSON.parse(e.target.result);
+const s=data&&data.state;
+if(!s||!Array.isArray(s.cases))throw 0;
+loadState(s);
+saveNow();
+if(!state.cases.length)state.cases.push(newCase());
+selectedPeopleIds=new Set();openLedgerIds.clear();
+switchTheme(state.theme);switchLang(state.lang);
+toast(t().backupOk);
+}catch(err){toast(t().backupFail)}
+};
+reader.readAsText(file);
 }
 function syncPeopleToolbar(){
 const tt=t();
@@ -1807,26 +1945,43 @@ return `
 }
 function yearlyAggregates(results){
 const map={};
-results.forEach(r=>{if(!r.active)return;r.segments.forEach(s=>{map[s.year]=(map[s.year]||0)+s.returnValue})});
-return Object.keys(map).map(Number).sort((a,b)=>a-b).map(y=>({year:y,ret:map[y]}));
+results.forEach(r=>{if(!r.active)return;r.segments.forEach(s=>{
+const m=map[s.year]||(map[s.year]={year:s.year,ret:0,principal:0,days:0,cases:0,rateSum:0});
+m.ret+=s.returnValue;m.principal+=s.openingBalance;m.days+=s.days;m.cases++;m.rateSum+=s.rate;
+})});
+return Object.keys(map).map(Number).sort((a,b)=>a-b).map(y=>Object.assign(map[y],{avgRate:map[y].rateSum/map[y].cases}));
+}
+function compactNum(n){
+const a=Math.abs(n);
+if(a>=1e9)return (n/1e9).toFixed(1).replace(/\.0$/,"")+"B";
+if(a>=1e6)return (n/1e6).toFixed(1).replace(/\.0$/,"")+"M";
+if(a>=1e4)return (n/1e3).toFixed(1).replace(/\.0$/,"")+"K";
+return Math.round(n).toLocaleString("en-US");
 }
 function yearChartHTML(agg){
-if(agg.length<2)return "";
+if(!agg.length)return "";
 const tt=t();
-const w=Math.max(320,agg.length*56),h=90;
-const slot=w/agg.length,barW=Math.min(34,slot-14);
+const total=agg.reduce((s,a)=>s+a.ret,0)||1;
+const w=Math.max(320,agg.length*64),h=132;
+const slot=w/agg.length,barW=Math.min(38,slot-16);
 const max=Math.max(...agg.map(a=>Math.abs(a.ret)),1);
 const bars=agg.map((a,i)=>{
-const bh=Math.max(3,Math.round((Math.abs(a.ret)/max)*56));
+const bh=Math.max(3,Math.round((Math.abs(a.ret)/max)*80));
 const x=i*slot+(slot-barW)/2;
-const y=h-bh-20;
-return `<g class="yBar"><title>${a.year}: ${a.ret.toFixed(2)}</title><rect x="${x.toFixed(1)}" y="${y}" width="${barW.toFixed(1)}" height="${bh}" rx="4" fill="url(#yGrad)"/><text x="${(x+barW/2).toFixed(1)}" y="${h-4}" text-anchor="middle" font-size="10" fill="var(--muted)">${a.year}</text></g>`;
+const y=h-bh-22;
+const cx=(x+barW/2).toFixed(1);
+return `<g class="yBar"><title>${a.year}: ${money(a.ret)} (${(a.ret/total*100).toFixed(1)}%)</title><rect x="${x.toFixed(1)}" y="${y}" width="${barW.toFixed(1)}" height="${bh}" rx="5" fill="url(#yGrad)"/><text x="${cx}" y="${y-6}" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink)">${compactNum(a.ret)}</text><text x="${cx}" y="${h-6}" text-anchor="middle" font-size="10" font-weight="700" fill="var(--muted)">${a.year}</text></g>`;
 }).join("");
+const rows=agg.map(a=>`<tr><td class="num">${a.year}</td><td class="num">${a.cases}</td><td class="num">${a.avgRate.toFixed(2)}%</td><td class="num">${moneyHTML(a.principal)}</td><td class="num">${moneyHTML(a.ret)}</td><td class="num"><span class="pctBar" style="width:${Math.max(2,Math.round(a.ret/total*60))}px"></span>${(a.ret/total*100).toFixed(1)}%</td></tr>`).join("");
 return `<div class="reportCard glass"><div class="sectionHead"><h2>${esc(tt.yearlyReturnTitle)}</h2></div>
-<div class="yearChartWrap"><svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet">
+<div class="yearChartWrap" style="overflow-x:auto"><svg viewBox="0 0 ${w} ${h}" style="min-width:${Math.min(w,agg.length*48)}px" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${esc(tt.yearlyReturnTitle)}">
 <defs><linearGradient id="yGrad" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="var(--accent-2)"/><stop offset="100%" stop-color="var(--accent)"/></linearGradient></defs>
+<line x1="0" x2="${w}" y1="${h-22}" y2="${h-22}" stroke="var(--line-strong)"/>
 ${bars}
-</svg></div></div>`;
+</svg></div>
+<div class="tableWrap" style="margin-top:14px"><table class="dataTable sumTable"><thead><tr><th>${esc(tt.yearCol)}</th><th class="num">${esc(tt.casesCount)}</th><th class="num">${esc(tt.rateCol)}</th><th class="num">${esc(tt.openingBalance)}</th><th class="num">${esc(tt.ret)}</th><th class="num">${esc(tt.sharePct)}</th></tr></thead><tbody>${rows}</tbody>
+<tfoot><tr><td>${esc(tt.totalReturn)}</td><td></td><td></td><td></td><td class="num">${moneyHTML(agg.reduce((s,a)=>s+a.ret,0))}</td><td class="num">100%</td></tr></tfoot></table></div>
+</div>`;
 }
 function miniYearGridHTML(r){
 const tt=t();
@@ -1841,12 +1996,14 @@ const grand=active.reduce((s,r)=>s+r.due,0)||1;
 return `<div class="caseLedger">${active.map(r=>{
 const pct=Math.max(0,Math.min(100,r.due/grand*100));
 const periodStr=r.start&&r.end?`${r.start} → ${r.end}`:"—";
-return `<div class="ledgerRow" id="ledger-${r.id}">
+const flag=r.missingYears.length?`<span class="flagDot" title="${esc(tt.missingRate)} ${r.missingYears.join(", ")}"></span>`:"";
+return `<div class="ledgerRow${openLedgerIds.has(r.id)?" open":""}" id="ledger-${r.id}">
 <div class="propBar" style="width:${pct}%"></div>
-<div class="ledgerMain" onclick="toggleLedgerRow('${r.id}')">
+<div class="ledgerMain" role="button" tabindex="0" aria-expanded="${openLedgerIds.has(r.id)}" onclick="toggleLedgerRow('${r.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleLedgerRow('${r.id}')}">
 <svg class="lchev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-<span class="lname">${esc(r.name)||"—"}</span>
-<span class="lperiod">${esc(periodStr)}</span>
+<span class="lname">${esc(r.name)||"—"}${flag}</span>
+<span class="lperiod money">${esc(periodStr)}</span>
+<span class="lval">${pct.toFixed(1)}%</span>
 <span class="lval">${esc(tt.base)}: ${moneyHTML(r.base)}</span>
 <span class="lval">${esc(tt.ret)}: ${moneyHTML(r.returnTotal)}</span>
 <span class="ldue">${moneyHTMLCur(r.due)}</span>
@@ -1855,9 +2012,54 @@ return `<div class="ledgerRow" id="ledger-${r.id}">
 </div>`;
 }).join("")}</div>`;
 }
+const openLedgerIds=new Set();
 function toggleLedgerRow(id){
 const row=document.getElementById("ledger-"+id);
-if(row)row.classList.toggle("open");
+if(!row)return;
+const open=row.classList.toggle("open");
+if(open)openLedgerIds.add(id);else openLedgerIds.delete(id);
+const m=row.querySelector(".ledgerMain");if(m)m.setAttribute("aria-expanded",String(open));
+}
+function setAllLedger(open){
+document.querySelectorAll(".ledgerRow").forEach(row=>{
+const id=row.id.slice(7);
+row.classList.toggle("open",open);
+if(open)openLedgerIds.add(id);else openLedgerIds.delete(id);
+});
+}
+function caseSummaryHTML(active,grand){
+const tt=t();
+if(!active.length)return "";
+const rows=active.map((r,i)=>`<tr><td class="num">${i+1}</td><td>${esc(r.name)||"—"}</td><td class="num">${moneyHTML(r.shortage)}</td><td class="num">${moneyHTML(r.includeExpenses?r.expenseValue:0)}</td><td class="num">${moneyHTML(r.returnTotal)}</td><td class="num"><b>${moneyHTML(r.due)}</b></td><td class="num">${grand?(r.due/grand*100).toFixed(1):"0.0"}%</td></tr>`).join("");
+const sS=active.reduce((s,r)=>s+r.shortage,0),sE=active.reduce((s,r)=>s+(r.includeExpenses?r.expenseValue:0),0),sR=active.reduce((s,r)=>s+r.returnTotal,0);
+return `<div class="reportCard glass"><div class="sectionHead"><h2>${esc(tt.summaryTitle)}</h2></div>
+<div class="tableWrap"><table class="dataTable sumTable"><thead><tr><th class="num">#</th><th>${esc(tt.name)}</th><th class="num">${esc(tt.shortage)}</th><th class="num">${esc(tt.compExpensesSeg)}</th><th class="num">${esc(tt.ret)}</th><th class="num">${esc(tt.dueCol)}</th><th class="num">${esc(tt.sharePct)}</th></tr></thead>
+<tbody>${rows}</tbody><tfoot><tr><td></td><td>${esc(tt.grandTotal)}</td><td class="num">${moneyHTML(sS)}</td><td class="num">${moneyHTML(sE)}</td><td class="num">${moneyHTML(sR)}</td><td class="num">${moneyHTML(grand)}</td><td class="num">100%</td></tr></tfoot></table></div></div>`;
+}
+function reportStats(results){
+const active=results.filter(r=>r.active);
+const withSeg=active.filter(r=>r.segments.length);
+const froms=active.map(r=>parseDate(r.start)).filter(Boolean),tos=active.map(r=>parseDate(r.end)).filter(Boolean);
+const from=froms.length?new Date(Math.min(...froms)):null,to=tos.length?new Date(Math.max(...tos)):null;
+const principalYears=withSeg.reduce((s,r)=>s+r.principal*r.totalFactor,0);
+const ret=withSeg.reduce((s,r)=>s+r.returnTotal,0);
+const principal=withSeg.reduce((s,r)=>s+r.principal,0);
+const avgDays=withSeg.length?withSeg.reduce((s,r)=>s+r.totalDays,0)/withSeg.length:0;
+return{active,from,to,annualYield:principalYears?ret/principalYears*100:0,roiPct:principal?ret/principal*100:0,avgDays,inactiveCount:results.filter(r=>!r.active&&(r.shortage>0||r.name)).length};
+}
+function durationFromDays(days){
+if(!days)return "—";
+const y=Math.floor(days/365.25),m=Math.floor((days-y*365.25)/30.44),d=Math.round(days-y*365.25-m*30.44);
+const from=new Date(2000,0,1),to=new Date(2000+y,m,1+Math.max(0,d-1));
+return humanDuration(from,to)||"—";
+}
+function narrativeHTML(st,totalBase,totalReturn,grand,people,shares){
+const tt=t();
+if(!st.active.length)return "";
+const b=v=>`<b>${moneyHTMLCur(v)}</b>`;
+let s=esc(tt.narrativeFull).replace("{cases}",`<b>${st.active.length}</b>`).replace("{base}",b(totalBase)).replace("{ret}",b(totalReturn)).replace("{from}",`<b class="money">${st.from?isoOf(st.from):"—"}</b>`).replace("{to}",`<b class="money">${st.to?isoOf(st.to):"—"}</b>`).replace("{grand}",b(grand));
+if(people.length)s+=esc(tt.narrativeSplit).replace("{n}",`<b>${people.length}</b>`).replace("{share}",b(shares[shares.length-1]||0));
+return `<p class="narrative" style="margin:14px 0 0">${s}</p>`;
 }
 function initials(name){
 const parts=String(name||"").trim().split(/\s+/).filter(Boolean);
@@ -1933,7 +2135,7 @@ return `<div class="segDetailWrap">
 <div class="segNote">${tt.segFormulaNote}</div>
 </div>`;
 }
-let reportDirty=false;
+let reportDirty=false,lastHeroValue=null;
 function renderReport(){
 if(state.activeTab!=="report"){reportDirty=true;return}
 reportDirty=false;
@@ -1948,14 +2150,25 @@ const grand=results.reduce((s,r)=>s+r.due,0);
 const people=eligiblePeople();
 const shares=allocateEqual(grand,people.length);
 const bannerHTML=missingRatesBannerHTML(results);
-const skipCountUp=!!bannerHTML;
+const st=reportStats(results);
+const skipCountUp=lastHeroValue===grand;
+lastHeroValue=grand;
 const el=document.getElementById("reportBody");
+const stat=(l,v,s)=>`<div class="stat"><div class="sl">${esc(l)}</div><div class="sv">${v}</div>${s?`<div class="ss">${s}</div>`:""}</div>`;
+const statsHTML=st.active.length?`<div class="statGrid">
+${stat(tt.casesCount,`${st.active.length}`,st.inactiveCount?esc(tt.inactiveNote)+": "+st.inactiveCount:"")}
+${stat(tt.peopleCount,`${people.length}`,people.length?`${esc(tt.perPerson)}: ${moneyHTML(shares[0]||0)}`:"")}
+${stat(tt.dateSpan,`<span class="money" style="font-size:12.5px">${st.from?isoOf(st.from):"—"} → ${st.to?isoOf(st.to):"—"}</span>`,"")}
+${stat(tt.avgDuration,esc(durationFromDays(st.avgDays)),"")}
+${stat(tt.avgRate,`<span class="money">${st.annualYield.toFixed(2)}%</span>`,`${esc(tt.effectiveYield)}: <span class="money">${st.roiPct.toFixed(2)}%</span>`)}
+${stat(tt.perCaseAvg,moneyHTML(grand/st.active.length),"")}
+</div>`:"";
 el.innerHTML=`
 <div class="reportCard glass">
 <div class="reportHeadBand">
 <div>
 <div class="eyebrow">${esc(tt.reportTab)}</div>
-<h2>${esc(tt.grandTotal)}</h2>
+<h2>${esc(tt.reportTitleFull)}</h2>
 <div class="genTime">${esc(tt.generatedOn)} ${esc(nowStr())}</div>
 </div>
 <div class="reportActions">
@@ -1972,13 +2185,13 @@ ${bannerHTML}
 <div class="reconcileCaption">${esc(tt.base)} <b>${moneyHTML(totalBase)}</b> + ${esc(tt.ret)} <b>${moneyHTML(totalReturn)}</b></div>
 </div>
 ${compositionBarHTML(totalShortageInBase,totalExpensesInBase,totalReturn,grand)}
-<div class="kpiRow" style="margin-top:20px;margin-bottom:0">
-<div class="kpi glass k-people"><div class="lbl">${esc(tt.peopleCount)}</div><div class="val">${people.length}</div></div>
+${statsHTML}
+${narrativeHTML(st,totalBase,totalReturn,grand,people,shares)}
 </div>
-</div>
+${caseSummaryHTML(active,grand)}
 ${yearChartHTML(yearlyAggregates(results))}
 <div class="reportCard glass">
-<div class="sectionHead"><h2>${esc(tt.reportPerCase)}</h2></div>
+<div class="sectionHead"><h2>${esc(tt.reportPerCase)}</h2>${active.length?`<div class="ledgerTools"><button type="button" class="btn btn-ghost btn-sm" onclick="setAllLedger(true)">${esc(tt.expandAll)}</button><button type="button" class="btn btn-ghost btn-sm" onclick="setAllLedger(false)">${esc(tt.collapseAll)}</button></div>`:""}</div>
 ${caseLedgerHTML(results)}
 </div>
 <div class="reportCard glass">
@@ -1999,22 +2212,31 @@ if(heroEl)animateCountUp(heroEl,grand,skipCountUp);
 function renderRateGrid(){
 const grid=document.getElementById("rateGrid");
 const years=Object.keys(state.rates).map(Number).sort((a,b)=>a-b);
+const tt=t();
 grid.innerHTML=years.map(y=>`
-<div class="rateRow">
+<div class="rateRow${state.rates[y]===""?" missing":""}">
 <div class="yr">${y}</div>
-<input type="text" inputmode="decimal" value="${state.rates[y]}" oninput="numInput(this)" onchange="updateRate(${y},this.value)">
+<input type="text" inputmode="decimal" value="${esc(state.rates[y])}" oninput="numInput(this)" onchange="updateRate(${y},this.value)">
 <div class="pct">%</div>
+<button type="button" class="rmYr" title="${esc(tt.removeYear)}" aria-label="${esc(tt.removeYear)} ${y}" onclick="removeRateYear(${y})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
 </div>`).join("");
 }
+function recalcEverything(){renderCasesList();renderCasesKpi();renderReport();}
 function updateRate(year,val){
 state.rates[year]=val===""?"":numberValue(val);
-saveState();renderCasesList();renderCasesKpi();renderReport();
+saveState();renderRateGrid();recalcEverything();
+}
+function removeRateYear(year){
+delete state.rates[year];
+saveState();renderRateGrid();recalcEverything();
 }
 function addRateYear(){
 const years=Object.keys(state.rates).map(Number);
 const next=years.length?Math.max(...years)+1:new Date().getFullYear();
-state.rates[next]=0;
-saveState();renderRateGrid();renderCasesList();renderCasesKpi();renderReport();
+const prev=years.length?state.rates[Math.max(...years)]:"";
+state.rates[next]=prev===undefined?"":prev;
+saveState();renderRateGrid();recalcEverything();
+requestAnimationFrame(()=>{const g=document.getElementById("rateGrid");g.scrollTop=g.scrollHeight;const ins=g.querySelectorAll("input");if(ins.length){ins[ins.length-1].focus();ins[ins.length-1].select()}});
 }
 function syncMarginInput(){
 const el=document.getElementById("marginInput");
@@ -2024,13 +2246,24 @@ function updateMargin(val){
 state.rateMargin=val===""?0:numberValue(val);
 saveState();renderCasesList();renderCasesKpi();renderReport();
 }
-function toast(msg){
+function toast(msg,action){
 const host=document.getElementById("toastHost");
+while(host.children.length>=3)host.firstElementChild.remove();
 const el=document.createElement("div");
 el.className="toast glass-strong";
-el.textContent=msg;
+el.setAttribute("role","status");
+const span=document.createElement("span");
+span.textContent=msg;
+el.appendChild(span);
+const kill=()=>{el.style.opacity="0";setTimeout(()=>el.remove(),300)};
+if(action){
+const b=document.createElement("button");
+b.type="button";b.className="toastAct";b.textContent=action.label;
+b.onclick=()=>{action.fn();kill()};
+el.appendChild(b);
+}
 host.appendChild(el);
-setTimeout(()=>{el.style.opacity="0";el.style.transition="opacity .3s";setTimeout(()=>el.remove(),300)},2200);
+setTimeout(kill,action?5000:2200);
 }
 let scrollLockCount=0;
 function lockScroll(){scrollLockCount++;document.body.style.overflow="hidden"}
@@ -2093,43 +2326,76 @@ toast(tt.importFail);
 reader.readAsArrayBuffer(file);
 }
 const XLS_COLORS={accent:"FFD97757",accent2:"FF6A93B0",ink:"FF1C1A16",success:"FF7C9473",white:"FFFFFFFF",cream:"FFF5F2EC",rowAlt:"FFF8F5EF",line:"FFE7E1D3"};
-function xlsBorder(){return{top:{style:"thin",color:{rgb:XLS_COLORS.line}},bottom:{style:"thin",color:{rgb:XLS_COLORS.line}},left:{style:"thin",color:{rgb:XLS_COLORS.line}},right:{style:"thin",color:{rgb:XLS_COLORS.line}}}}
-function styleHeaderRow(ws,r,colCount){
-for(let c=0;c<colCount;c++){
-const addr=XLSX.utils.encode_cell({r,c});
-if(!ws[addr])ws[addr]={t:"s",v:""};
-ws[addr].s={font:{bold:true,sz:11,color:{rgb:XLS_COLORS.white}},fill:{patternType:"solid",fgColor:{rgb:XLS_COLORS.accent}},alignment:{horizontal:"center",vertical:"center",wrapText:true},border:xlsBorder()};
+const XLS_FMT={money:"#,##0.00",pct:"0.00%",int:"#,##0",dec2:"0.00",date:"yyyy-mm-dd",factor:"0.0000",year:"0"};
+function xlsDate(iso){
+const d=parseDate(iso);
+if(!d)return "";
+return{v:(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())-Date.UTC(1899,11,30))/86400000,f:"date"};
 }
+function xlsSheet(o){
+const rtl=state.lang==="ar";
+const ws={};
+const nc=o.headers.length;
+const merges=[{s:{r:0,c:0},e:{r:0,c:nc-1}},{s:{r:1,c:0},e:{r:1,c:nc-1}}];
+const B=c=>({style:"thin",color:{rgb:c||XLS_COLORS.line}});
+const border={top:B(),bottom:B(),left:B(),right:B()};
+const hAlign=rtl?"right":"left";
+const put=(r,c,cell)=>{ws[XLSX.utils.encode_cell({r,c})]=cell};
+const baseFont={name:"Calibri",sz:10.5,color:{rgb:XLS_COLORS.ink}};
+put(0,0,{t:"s",v:o.title,s:{font:{name:"Calibri",sz:16,bold:true,color:{rgb:XLS_COLORS.accent}},alignment:{horizontal:hAlign,vertical:"center",readingOrder:rtl?2:1}}});
+for(let c=1;c<nc;c++)put(0,c,{t:"s",v:""});
+put(1,0,{t:"s",v:o.sub||"",s:{font:{name:"Calibri",sz:9.5,italic:true,color:{rgb:"FF7A7468"}},alignment:{horizontal:hAlign,wrapText:true,readingOrder:rtl?2:1}}});
+for(let c=1;c<nc;c++)put(1,c,{t:"s",v:""});
+const headStyle={font:{name:"Calibri",bold:true,sz:10.5,color:{rgb:XLS_COLORS.white}},fill:{patternType:"solid",fgColor:{rgb:XLS_COLORS.accent}},alignment:{horizontal:"center",vertical:"center",wrapText:true},border};
+const sectionStyle=Object.assign({},headStyle,{fill:{patternType:"solid",fgColor:{rgb:XLS_COLORS.accent2}}});
+o.headers.forEach((h,c)=>put(3,c,{t:"s",v:h,s:headStyle}));
+const makeCell=(raw,c,rowStyle)=>{
+let v=raw,fmt=o.fmts[c],formula=null,hi=false;
+if(raw&&typeof raw==="object"){v=raw.v;hi=!!raw.hi;if(raw.f){if(XLS_FMT[raw.f])fmt=raw.f;else formula=raw.f}}
+if(v===undefined||v===null)v="";
+const isNum=typeof v==="number";
+const cell={t:isNum?"n":"s",v:isNum?v:String(v)};
+if(formula)cell.f=formula;
+if(isNum&&XLS_FMT[fmt])cell.z=XLS_FMT[fmt];
+else if(isNum&&fmt==="auto")cell.z=Number.isInteger(v)?XLS_FMT.int:XLS_FMT.money;
+const font=Object.assign({},baseFont,rowStyle.font||{},hi?{bold:true,color:{rgb:XLS_COLORS.accent}}:{});
+cell.s={font,fill:rowStyle.fill,border:rowStyle.border||border,alignment:{horizontal:isNum||fmt==="date"?"center":hAlign,vertical:"center",readingOrder:rtl?2:1}};
+if(isNum&&fmt!=="date"&&fmt!=="year"&&fmt!=="int")cell.s.alignment.horizontal=rtl?"left":"right";
+return cell;
+};
+let r=4,band=0;
+const rows=o.rows.length?o.rows:[["—"]];
+rows.forEach(row=>{
+if(row===null){r++;band=0;return}
+if(row.section){row.section.forEach((h,c)=>put(r,c,{t:"s",v:h,s:sectionStyle}));r++;band=0;return}
+const fill={patternType:"solid",fgColor:{rgb:band%2?XLS_COLORS.rowAlt:XLS_COLORS.white}};
+for(let c=0;c<nc;c++){
+const cell=makeCell(row[c],c,{fill,font:o.kv&&c===0?{bold:true}:{}});
+put(r,c,cell);
 }
-function styleBodyCell(ws,r,c,opts){
-const addr=XLSX.utils.encode_cell({r,c});
-if(!ws[addr])return;
-const cell=ws[addr];
-const isNum=typeof cell.v==="number";
-cell.s={font:{sz:10.5,color:{rgb:XLS_COLORS.ink}},fill:{patternType:"solid",fgColor:{rgb:opts&&opts.alt?XLS_COLORS.rowAlt:XLS_COLORS.white}},border:xlsBorder(),alignment:isNum?{horizontal:"right"}:{vertical:"center"}};
-if(opts&&opts.money&&isNum)cell.z="#,##0.00";
-if(opts&&opts.intFmt&&isNum)cell.z="#,##0";
-if(opts&&opts.pctFmt&&isNum)cell.z='0.00"%"';
-if(opts&&opts.factorFmt&&isNum)cell.z="0.0000";
+r++;band++;
+});
+const dataEnd=r-1;
+if(o.total){
+const fill={patternType:"solid",fgColor:{rgb:XLS_COLORS.cream}};
+const tb={top:{style:"medium",color:{rgb:XLS_COLORS.accent}},bottom:{style:"medium",color:{rgb:XLS_COLORS.accent}},left:B(),right:B()};
+o.total.forEach((raw,c)=>{
+let cellRaw=raw;
+if(raw&&raw.f&&!XLS_FMT[raw.f]&&raw.v===undefined){
+let s=0;o.rows.forEach(row=>{if(!row||row.section)return;const x=row[c];const n=x&&typeof x==="object"?x.v:x;if(typeof n==="number")s+=n});
+cellRaw={v:s,f:raw.f};
 }
-function styleBodyRange(ws,startRow,endRow,colCount,opts){
-for(let r=startRow;r<=endRow;r++){
-const alt=(r-startRow)%2===1;
-for(let c=0;c<colCount;c++){
-const cellOpts=Object.assign({alt},opts&&opts.cols&&opts.cols[c]?opts.cols[c]:{});
-styleBodyCell(ws,r,c,cellOpts);
+put(r,c,makeCell(cellRaw,c,{fill,border:tb,font:{bold:true,sz:11}}));
+});
+r++;
 }
-}
-}
-function styleTotalRow(ws,r,colCount,moneyCols){
-for(let c=0;c<colCount;c++){
-const addr=XLSX.utils.encode_cell({r,c});
-if(!ws[addr])ws[addr]={t:"s",v:""};
-const cell=ws[addr];
-const isMoney=moneyCols&&moneyCols.includes(c)&&typeof cell.v==="number";
-cell.s={font:{bold:true,sz:11,color:{rgb:XLS_COLORS.ink}},fill:{patternType:"solid",fgColor:{rgb:XLS_COLORS.cream}},border:{top:{style:"medium",color:{rgb:XLS_COLORS.accent}}}};
-if(isMoney)cell.z="#,##0.00";
-}
+ws["!ref"]=XLSX.utils.encode_range({s:{r:0,c:0},e:{r:Math.max(r-1,3),c:nc-1}});
+ws["!merges"]=merges;
+ws["!cols"]=o.widths.map(w=>({wch:w}));
+ws["!rows"]=[{hpt:26},{hpt:18},{hpt:6},{hpt:30}];
+if(!o.kv&&o.rows.length)ws["!autofilter"]={ref:XLSX.utils.encode_range({s:{r:3,c:0},e:{r:dataEnd,c:nc-1}})};
+ws["!margins"]={left:.5,right:.5,top:.6,bottom:.6,header:.3,footer:.3};
+return ws;
 }
 function sheetName(s,used){
 let base=String(s||"Sheet").replace(/[\[\]:*?\/\\]/g,"").trim().slice(0,31)||"Sheet";
@@ -2182,75 +2448,87 @@ const people=eligiblePeople();
 const grand=results.reduce((s,r)=>s+r.due,0);
 const shares=allocateEqual(grand,people.length);
 const wb=XLSX.utils.book_new();
-wb.Workbook={Views:[{RTL:state.lang==="ar"}]};
+const rtl=state.lang==="ar";
+wb.Workbook={Views:[{RTL:rtl}]};
+wb.Props={Title:tt.reportTitleFull,Author:tt.title,CreatedDate:new Date()};
 const usedNames=new Set();
-const caseAOA=[[tt.name,tt.period,tt.base,tt.ret,tt.dueCol]];
-results.forEach(r=>caseAOA.push([csvGuard(r.name)||"—",r.start&&r.end?`${r.start} - ${r.end}`:"—",r.base,r.returnTotal,r.due]));
-const caseTotalRow=caseAOA.length;
-caseAOA.push([tt.grandTotal,"","","",grand]);
-const ws1=XLSX.utils.aoa_to_sheet(caseAOA);
-styleHeaderRow(ws1,0,5);
-styleBodyRange(ws1,1,caseTotalRow-1,5,{cols:{2:{money:true},3:{money:true},4:{money:true}}});
-styleTotalRow(ws1,caseTotalRow,5,[4]);
-ws1["!cols"]=[{wch:24},{wch:24},{wch:16},{wch:16},{wch:16}];
-ws1["!views"]=[{state:"frozen",ySplit:1}];
-ws1["!autofilter"]={ref:XLSX.utils.encode_range({s:{r:0,c:0},e:{r:caseTotalRow-1,c:4}})};
-XLSX.utils.book_append_sheet(wb,ws1,sheetName(tt.reportPerCase,usedNames));
-const segAOA=[[tt.name,tt.yearCol,tt.period,tt.daysCol,tt.factorCol,tt.rateCol,tt.openingBalance,tt.ret,tt.closingBalance]];
-results.forEach(r=>r.segments.forEach(s=>segAOA.push([csvGuard(r.name)||"—",s.year,`${isoOf(s.from)} - ${isoOf(s.to)}`,s.days,s.factor,s.rate,s.openingBalance,s.returnValue,s.closingBalance])));
-const ws3=XLSX.utils.aoa_to_sheet(segAOA);
-styleHeaderRow(ws3,0,9);
-if(segAOA.length>1){
-styleBodyRange(ws3,1,segAOA.length-1,9,{cols:{3:{intFmt:true},4:{factorFmt:true},5:{pctFmt:true},6:{money:true},7:{money:true},8:{money:true}}});
-ws3["!autofilter"]={ref:XLSX.utils.encode_range({s:{r:0,c:0},e:{r:segAOA.length-1,c:8}})};
-}
-ws3["!cols"]=[{wch:24},{wch:8},{wch:24},{wch:8},{wch:10},{wch:10},{wch:16},{wch:16},{wch:16}];
-ws3["!views"]=[{state:"frozen",ySplit:1}];
+const all=computeAll();
+const st=reportStats(all);
+const cur=currencyLabel();
+const sub=`${tt.generatedOn} ${nowStr()} · ${cur}`;
+const sumCol=(col,r0,r1)=>`SUM(${col}${r0}:${col}${r1})`;
+const totalShort=results.reduce((s,r)=>s+(r.includeShortage?r.shortage:0),0);
+const totalExp=results.reduce((s,r)=>s+(r.includeExpenses?r.expenseValue:0),0);
+const totalRet=results.reduce((s,r)=>s+r.returnTotal,0);
+const totalBase=results.reduce((s,r)=>s+r.base,0);
+const accrualTitle0={commercial15:tt.accrualCommercial15,actualActual:tt.accrualActualActual,inclusiveMonths:tt.accrualInclusiveMonths,nextWorkingMonth:tt.accrualNextWorkingMonth}[state.accrual];
+const ws0=xlsSheet({title:tt.reportTitleFull,sub,headers:[tt.settingCol,tt.valueCol],widths:[34,26],fmts:["text","auto"],kv:true,rows:[
+[tt.casesCount,{v:results.length,f:"int"}],
+[tt.peopleCount,{v:people.length,f:"int"}],
+[tt.dateSpan,st.from?`${isoOf(st.from)} → ${isoOf(st.to)}`:"—"],
+[tt.calcSection,accrualTitle0],
+null,
+[tt.totalShortage,{v:totalShort,f:"money"}],
+[tt.totalExpenses,{v:totalExp,f:"money"}],
+[tt.totalBase,{v:totalBase,f:"money"}],
+[tt.totalReturn,{v:totalRet,f:"money"}],
+[tt.grandTotal,{v:grand,f:"money",hi:true}],
+[tt.perPerson,{v:people.length?shares[0]:0,f:"money"}],
+null,
+[`${tt.compShortageSeg} (${tt.sharePct})`,{v:grand?totalShort/grand:0,f:"pct"}],
+[`${tt.compExpensesSeg} (${tt.sharePct})`,{v:grand?totalExp/grand:0,f:"pct"}],
+[`${tt.compReturnSeg} (${tt.sharePct})`,{v:grand?totalRet/grand:0,f:"pct"}],
+[tt.avgRate,{v:st.annualYield/100,f:"pct"}],
+[tt.effectiveYield,{v:st.roiPct/100,f:"pct"}]
+]});
+XLSX.utils.book_append_sheet(wb,ws0,sheetName(tt.summarySheet,usedNames));
+const n1=results.length,first=5,last=first+n1-1;
+const caseRows=results.map((r,i)=>[i+1,csvGuard(r.name)||"—",r.shortage,r.expenseRate/100,r.expenseValue,r.base,r.principal,
+xlsDate(r.start),xlsDate(r.end),r.effFrom?xlsDate(isoOf(r.effFrom)):"",r.effTo?xlsDate(isoOf(r.effTo)):"",r.totalDays,r.totalFactor*12,
+r.customRate?tt.rateSourceCustom:tt.rateSourceTable,r.returnTotal,r.due,{v:grand?r.due/grand:0,f:`P${first+i}/P$${last+1}`}]);
+const ws1=xlsSheet({title:tt.casesSheet,sub,headers:["#",tt.name,tt.shortage,tt.expenseRate,tt.expenseValue,tt.base,tt.principalLbl,tt.receipt,tt.settlement,tt.effFrom,tt.effTo,tt.daysCol,tt.monthsCol,tt.rateSource,tt.ret,tt.dueCol,tt.sharePct],
+fmts:["int","text","money","pct","money","money","money","date","date","date","date","int","dec2","text","money","money","pct"],
+widths:[5,24,15,10,14,15,15,12,12,12,12,8,8,10,15,16,9],rows:caseRows,
+total:n1?[null,tt.grandTotal,{f:sumCol("C",first,last)},null,{f:sumCol("E",first,last)},{f:sumCol("F",first,last)},{f:sumCol("G",first,last)},null,null,null,null,{f:sumCol("L",first,last)},null,null,{f:sumCol("O",first,last)},{f:sumCol("P",first,last)},{v:1}]:null});
+XLSX.utils.book_append_sheet(wb,ws1,sheetName(tt.casesSheet,usedNames));
+const segRows=[];
+results.forEach(r=>r.segments.forEach(s=>segRows.push([csvGuard(r.name)||"—",s.year,xlsDate(isoOf(s.from)),xlsDate(isoOf(s.to)),s.days,s.factor,s.baseRate==null?"—":s.baseRate/100,(s.rate-(s.baseRate||0))/100,s.rate/100,s.openingBalance,s.returnValue,s.closingBalance])));
+const sl=first+segRows.length-1;
+const ws3=xlsSheet({title:tt.yearlyBreakdown,sub:tt.segFormulaNote,headers:[tt.name,tt.yearCol,tt.effFrom,tt.effTo,tt.daysCol,tt.factorCol,tt.baseRate,tt.marginLbl,tt.appliedRate,tt.openingBalance,tt.ret,tt.closingBalance],
+fmts:["text","year","date","date","int","factor","pct","pct","pct","money","money","money"],widths:[24,7,12,12,7,9,10,9,11,16,15,16],rows:segRows,
+total:segRows.length?[tt.totalReturn,null,null,null,{f:sumCol("E",first,sl)},null,null,null,null,null,{f:sumCol("K",first,sl)},null]:null});
 XLSX.utils.book_append_sheet(wb,ws3,sheetName(tt.yearlyBreakdown,usedNames));
-const peopleAOA=[[tt.name,tt.share]];
-people.forEach((p,i)=>peopleAOA.push([csvGuard(p.name),shares[i]||0]));
-const peopleTotalRow=peopleAOA.length;
-peopleAOA.push([tt.grandTotal,grand]);
-const ws2=XLSX.utils.aoa_to_sheet(peopleAOA);
-styleHeaderRow(ws2,0,2);
-styleBodyRange(ws2,1,peopleTotalRow-1,2,{cols:{1:{money:true}}});
-styleTotalRow(ws2,peopleTotalRow,2,[1]);
-ws2["!cols"]=[{wch:28},{wch:16}];
-ws2["!views"]=[{state:"frozen",ySplit:1}];
+const agg=yearlyAggregates(results);
+const al=first+agg.length-1;
+const ws5=xlsSheet({title:tt.byYearSheet,sub,headers:[tt.yearCol,tt.casesCount,tt.appliedRate,tt.openingBalance,tt.ret,tt.sharePct],
+fmts:["year","int","pct","money","money","pct"],widths:[8,10,12,18,16,10],
+rows:agg.map((a,i)=>[a.year,a.cases,a.avgRate/100,a.principal,a.ret,{v:totalRet?a.ret/totalRet:0,f:`E${first+i}/E$${al+1}`}]),
+total:agg.length?[tt.totalReturn,null,null,null,{f:sumCol("E",first,al)},{v:1}]:null});
+XLSX.utils.book_append_sheet(wb,ws5,sheetName(tt.byYearSheet,usedNames));
+const pl=first+people.length-1;
+const ws2=xlsSheet({title:tt.reportPerPerson,sub,headers:["#",tt.name,tt.share,tt.sharePct],fmts:["int","text","money","pct"],widths:[5,30,16,10],
+rows:people.map((p,i)=>[i+1,csvGuard(p.name),shares[i]||0,{v:grand?(shares[i]||0)/grand:0,f:`C${first+i}/C$${pl+1}`}]),
+total:people.length?[null,tt.grandTotal,{f:sumCol("C",first,pl)},{v:1}]:null});
 XLSX.utils.book_append_sheet(wb,ws2,sheetName(tt.reportPerPerson,usedNames));
 const accrualTitle={commercial15:tt.accrualCommercial15,actualActual:tt.accrualActualActual,inclusiveMonths:tt.accrualInclusiveMonths,nextWorkingMonth:tt.accrualNextWorkingMonth}[state.accrual]||state.accrual;
 const roundTitle={final:tt.roundFinal,perYear:tt.roundYear,none:tt.roundNone}[state.rounding]||state.rounding;
-const assumeAOA=[[tt.settingCol,tt.valueCol],
+const kvRows=[
 [tt.calcSection,accrualTitle],
-[tt.marginLbl,numberValue(state.rateMargin)/100],
+[tt.marginLbl,{v:numberValue(state.rateMargin)/100,f:"pct"}],
 [tt.compound,state.compounding?tt.onLbl:tt.offLbl],
 [tt.roundingLbl,roundTitle],
-[tt.currencyLbl,currencyLabel()],
-[tt.generatedOn,nowStr()]];
+[tt.roundExpensesLbl,state.roundExpenses?tt.onLbl:tt.offLbl],
+[tt.currencyLbl,cur]];
 if(state.accrual==="nextWorkingMonth"){
-const sep=state.lang==="ar"?"، ":", ";
-const names=(state.weekend||[]).slice().sort((a,b)=>a-b).map(d=>tt.dayNames[d]).join(sep);
-if(names)assumeAOA.push([tt.weekendSection,names]);
+const names=(state.weekend||[]).slice().sort((a,b)=>a-b).map(d=>tt.dayNames[d]).join(listSep);
+if(names)kvRows.push([tt.weekendSection,names]);
+if(state.holidays.length)kvRows.push([tt.holidaysLbl,state.holidays.join(listSep)]);
 }
-assumeAOA.push([tt.engineVersionLbl,ROI_EXPRESS_BUILD]);
-assumeAOA.push([tt.rateTableHashLbl,rateTableHash()]);
-if(missingYears.length)assumeAOA.push([tt.missingRatesAssumptionLbl,missingYears.join(listSep)]);
-assumeAOA.push([]);
-const rateHeaderRow=assumeAOA.length;
-assumeAOA.push([tt.yearCol,tt.rateCol]);
-Object.keys(state.rates).map(Number).sort((a,b)=>a-b).forEach(y=>assumeAOA.push([y,numberValue(state.rates[y])/100]));
-const ws4=XLSX.utils.aoa_to_sheet(assumeAOA);
-styleHeaderRow(ws4,0,2);
-styleBodyRange(ws4,1,rateHeaderRow-1,2,{cols:{1:{pctFmt:false}}});
-const marginAddr=XLSX.utils.encode_cell({r:2,c:1});
-if(ws4[marginAddr])ws4[marginAddr].z='0.00%';
-styleHeaderRow(ws4,rateHeaderRow,2);
-styleBodyRange(ws4,rateHeaderRow+1,assumeAOA.length-1,2,{cols:{1:{pctFmt:false}}});
-for(let r=rateHeaderRow+1;r<assumeAOA.length;r++){
-const addr=XLSX.utils.encode_cell({r,c:1});
-if(ws4[addr])ws4[addr].z="0.00%";
-}
-ws4["!cols"]=[{wch:26},{wch:26}];
+kvRows.push([tt.engineVersionLbl,ROI_EXPRESS_BUILD],[tt.rateTableHashLbl,rateTableHash()]);
+if(missingYears.length)kvRows.push([tt.missingRatesAssumptionLbl,{v:missingYears.join(listSep),hi:true}]);
+kvRows.push(null,{section:[tt.yearCol,tt.rateCol]});
+Object.keys(state.rates).map(Number).sort((a,b)=>a-b).forEach(y=>kvRows.push([String(y),state.rates[y]===""?"—":{v:numberValue(state.rates[y])/100,f:"pct"}]));
+const ws4=xlsSheet({title:tt.assumptionsTitle,sub,headers:[tt.settingCol,tt.valueCol],widths:[34,34],fmts:["text","auto"],kv:true,rows:kvRows});
 XLSX.utils.book_append_sheet(wb,ws4,sheetName(tt.assumptionsTitle,usedNames));
 XLSX.writeFile(wb,"roi_express_"+isoOf(new Date())+".xlsx");
 toast(tt.exportedOk);
@@ -2356,6 +2634,14 @@ document.getElementById("pasteCasesPanel").style.display="none";
 document.getElementById("pasteCasesArea").value="";
 });
 document.getElementById("pasteCasesApply").addEventListener("click",applyCasesPaste);
+let searchTimer=0;
+document.getElementById("peopleSearch").addEventListener("input",()=>{clearTimeout(searchTimer);searchTimer=setTimeout(renderPeopleList,120)});
+document.getElementById("backupExportBtn").addEventListener("click",exportBackup);
+document.getElementById("backupImportBtn").addEventListener("click",()=>document.getElementById("backupFileInput").click());
+document.getElementById("backupFileInput").addEventListener("change",function(){if(this.files&&this.files[0])importBackup(this.files[0]);this.value=""});
+document.addEventListener("keydown",e=>{
+if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="p"&&state.activeTab==="report"){e.preventDefault();printReportAction()}
+});
 renderStatic();
 renderAll();
 requestAnimationFrame(()=>moveTabIndicator(true));
